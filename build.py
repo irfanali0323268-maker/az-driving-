@@ -16,7 +16,7 @@ WA_ICON = '<svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor" a
 FOOT_Q = [('How much are lessons?', 'Hi AZ Driving School, how much are your driving lessons?'), ('Manual or automatic?', 'Hi, do you offer both manual and automatic lessons?'),
           ('Which areas do you cover?', 'Hi, which areas do you cover for driving lessons?'), ('Do you teach beginners?', 'Hi, do you teach complete beginners?'), ('How do I book?', 'Hi, how do I book my first lesson?')]
 MAPS = 'https://www.google.com/maps/search/?api=1&query=Diamond+Jubilee+Close+Gloucester+GL1+4LR'
-V = '31'  # cache-bust for css/js
+V = '32'  # cache-bust for css/js
 
 esc = html.escape
 def slug(s): return re.sub(r'[^a-z0-9]+', '-', s.lower()).strip('-')
@@ -86,7 +86,7 @@ GALLERY_ALT = {
  13: 'Learner in a teal t-shirt holding a document beside a white lesson car', 14: 'Learner in a maroon t-shirt holding a document beside a white hybrid car',
  15: 'Learner holding a document in front of a black lesson car', 16: 'Learner holding a document beside a black car with an L plate',
  17: 'Learner standing beside a black lesson car on a residential street', 18: 'Learner standing beside a black lesson car in a parking bay',
- 19: 'Learner holding a document beside a grey lesson car'}
+ 19: 'Learner holding a document beside a grey lesson car', 20: 'Learner in a white t-shirt holding a document behind a silver lesson car', 21: 'Learner in a light blue shirt holding a document beside a silver lesson car', 22: 'Learner in sunglasses holding a document beside a silver lesson car with the door open', 23: 'Learner in a grey t-shirt holding a document beside a silver lesson car', 24: 'Learner in a white t-shirt holding a document beside a silver lesson car with an L plate', 25: 'Learner in a red top holding a document beside a silver lesson car with an L plate', 26: 'Learner in a grey hoodie holding a document beside a silver lesson car', 27: 'Learner in a black hoodie holding a document beside a lesson car with an L plate'}
 GALLERY_DIM = {n: ((640, 853) if n not in (5, 13, 8, 9, 12) else ((640, 640) if n in (5, 13) else (484, 860))) for n in GALLERY_ALT}
 
 PAGES = {  # key: (title, meta description)
@@ -99,10 +99,10 @@ PAGES = {  # key: (title, meta description)
  'faqs': ('Driving Lessons FAQs | AZ Driving School Gloucester', 'Answers about driving lessons in Gloucester: prices, booking, manual and automatic lessons, theory tests, practical tests and the areas we cover.'),
  'contact': ('Book Driving Lessons Gloucester | Contact AZ Driving School', f'Book driving lessons in Gloucester. Call or WhatsApp {PHONE}, email {EMAIL} or send an enquiry. Covering Stroud, Tewkesbury and Cheltenham.'),
 }
-PAGE_IMAGES = {'index': [f'/assets/gallery/photo-{i}.webp' for i in range(1, 9)],
+PAGE_IMAGES = {'index': [f'/assets/gallery/photo-{i}.webp' for i in list(range(1, 9)) + [20, 21, 22, 23]],
  'about-us': [f'/assets/gallery/photo-{i}.webp' for i in (2, 5, 9)],
  'driving-courses': [f'/assets/courses/course-{i}.webp' for i in range(1, 9)],
- 'success-stories': [f'/assets/gallery/photo-{i}.webp' for i in range(1, 20)]}
+ 'success-stories': [f'/assets/gallery/photo-{i}.webp' for i in range(1, 28)]}
 RELATED = {
  'about-us': [('driving-courses', 'Explore our driving lessons in Gloucester'), ('pricing', 'See driving lesson prices'), ('contact', 'Contact AZ Driving School')],
  'driving-courses': [('pricing', 'Driving lesson prices in Gloucester'), ('driving-theory-test', 'Driving theory test preparation'), ('contact', 'Book driving lessons in Gloucester')],
@@ -146,7 +146,7 @@ def info(items, tag='div'):
     return ''.join(f'<{tag} class="gl pe rv">{PE}<h3>{t}</h3><p>{d}</p></{tag}>' for t, d in items)
 
 def gallery(n, h2='Our learners', sub='Photos of AZ Driving School learners, shared with the school. Click a photo or use the arrows.'):
-    figs = ''.join(f'<figure class="cc"><img src="/assets/gallery/photo-{i}.webp" alt="{esc(GALLERY_ALT[i])}" width="{GALLERY_DIM[i][0]}" height="{GALLERY_DIM[i][1]}" loading="lazy" draggable="false"></figure>' for i in range(1, n + 1))
+    figs = ''.join(f'<figure class="cc"><img src="/assets/gallery/photo-{i}.webp" alt="{esc(GALLERY_ALT[i])}" width="{GALLERY_DIM[i][0]}" height="{GALLERY_DIM[i][1]}" loading="lazy" draggable="false"></figure>' for i in (n if isinstance(n, (list, tuple)) else range(1, n + 1)))
     return (f'<section class="w rv" aria-labelledby="gal-h">{sec_head("Gallery", h2.replace("<h2", "<h2"), sub).replace("<h2>", "<h2 id=gal-h>")}'
             f'<div class="cf" id="cf" data-slides="{n}" role="group" aria-roledescription="carousel" aria-label="AZ Driving School learner photos">{figs}</div>'
             f'<div class="row c" style="margin-top:18px"><button class="btn ic" id="cp" aria-label="Previous photo">←</button><button class="btn ic" id="cn" aria-label="Next photo">→</button></div></section>')
@@ -209,7 +209,7 @@ def body_index():
 <p class="lead">Your journey to becoming a confident, safe and independent driver starts with AZ Driving School in Gloucester. Friendly, experienced instructors, manual and automatic cars, and lessons planned around you.</p>
 <div class="row"><a class="btn p" href="/contact/">Book Your First Lesson</a><a class="btn" href="/driving-courses/">Explore Our Courses</a></div>
 <p class="fine">First two lessons (2 hours) £60 · Call or WhatsApp <a href="tel:{PHONE_D}">{PHONE}</a></p></div>
-<div class="hv">{VID}<div class="chip gl" style="top:-4%;left:-3%">Manual &amp; Automatic</div><div class="chip gl" style="top:44%;right:-4%;animation-delay:-2s">From £40 / hour</div><div class="chip gl" style="bottom:-19%;left:34%;animation-delay:-4s">4 areas covered</div></div></section>
+<div class="hv">{VID}<div class="chip gl" style="top:-4%;left:-3%">Manual &amp; Automatic</div><div class="chip gl" style="top:44%;right:-4%;animation-delay:-2s">From £30 / hour</div><div class="chip gl" style="bottom:-19%;left:34%;animation-delay:-4s">4 areas covered</div></div></section>
 <section class="w rv"><div class="gl stats">{stats}</div></section>
 <section class="w two"><div class="rv"><span class="eyebrow">About us</span><h2>Your trusted driving school in <span class="brv" data-blob="9" data-words="Stroud|Tewkesbury|Cheltenham">Gloucester</span></h2>
 <p>AZ Driving School pairs more than 15 years of experience with friendly, professional instruction. Whether you have never sat behind the wheel or you are returning after a break, every lesson is planned around you: your pace, your confidence and your goals.</p>
@@ -220,7 +220,7 @@ def body_index():
 <p class="rv" style="margin-top:22px"><a class="more" href="/driving-courses/">View all driving courses <span aria-hidden="true">→</span></a></p></section>
 <section class="w">{sec_head("How it works", "From first call to <span class=gr>confident driver</span>")}<div class="grid steps">{steps}</div></section>
 '''
-    + gallery(8) +
+    + gallery(list(range(1, 9)) + [20, 21, 22, 23]) +
     f'''<section class="w">{sec_head("Areas we cover", "Driving lessons across <span class=gr>Gloucestershire</span>")}<div class="grid">{areas}</div></section>
 <section class="w">{sec_head("Why AZ Driving School", "Why choose <span class=gr>AZ Driving School?</span>")}<div class="grid">{why}</div></section>
 <section class="w">{sec_head("Quick answers", "Common <span class=gr>questions</span>")}<div class="faq">{faq3}</div><p class="rv" style="margin-top:18px"><a class="more" href="/faqs/">Read all FAQs <span aria-hidden="true">→</span></a></p></section>'''
@@ -271,7 +271,7 @@ def body_theory():
 
 def body_success():
     return (head('Success stories', 'Real Learners. Real Progress. Real Success.', 'Photos of learners we have taught across Gloucester, Stroud, Tewkesbury and Cheltenham.', 'success-stories')
-      + gallery(19, 'Learners from across <span class=gr>Gloucestershire</span>', 'Photos of AZ Driving School learners, shared with the school. Click a photo or use the arrows.')
+      + gallery(list(range(1, 28)), 'Learners from across <span class=gr>Gloucestershire</span>', 'Photos of AZ Driving School learners, shared with the school. Click a photo or use the arrows.')
       + '<section class="w rv"><div class="gl"><h3>Genuine reviews only</h3><p>We only ever publish real learner feedback. Reviews will appear here as they are added.</p></div></section>'
       + CTA('Be our next success story.'))
 
