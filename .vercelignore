@@ -1,0 +1,7 @@
+build.py
+README.txt
+_headers
+_redirects
+__pycache__
+*.zip
+.DS_Store

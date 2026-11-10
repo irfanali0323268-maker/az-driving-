@@ -1,0 +1,7 @@
+/* TEAM */
+School: AZ Driving School, Gloucester, UK
+Contact: info@azdriving.co.uk
+
+/* SITE */
+Language: English (UK)
+Built as a fast static site with clean URLs.

@@ -1,0 +1,18 @@
+# AZ Driving School
+> Friendly, professional manual and automatic driving lessons in Gloucester, Stroud, Tewkesbury and Cheltenham (UK). Beginner, intensive, refresher, motorway, Pass Plus and eco driving courses. First two lessons (2 hours) £70.
+
+Contact: +44 7380 323268 (call or WhatsApp) | info@azdriving.co.uk | Diamond Jubilee Close, Gloucester, GL1 4LR
+
+## Pages
+- [Home](https://azdriving.co.uk/): AZ Driving School offers manual and automatic driving lessons in Gloucester, Stroud, Tewkesbury and Cheltenham. Friendly instructors. Book your first lesson.
+- [About Us](https://azdriving.co.uk/about-us/): Learn about AZ Driving School, a Gloucester driving school with 15+ years of experience, friendly instructors and a safety-first, personalised approach.
+- [Courses](https://azdriving.co.uk/driving-courses/): Manual, automatic, beginner, intensive, refresher, motorway, Pass Plus and eco driving lessons in Gloucester. See who each course suits and book.
+- [Theory Test](https://azdriving.co.uk/driving-theory-test/): Prepare for the UK car theory test: 50 questions, hazard perception, road signs, a free practice quiz and the official GOV.UK booking link.
+- [Success Stories](https://azdriving.co.uk/success-stories/): See photos of AZ Driving School learners in Gloucester, Stroud, Tewkesbury and Cheltenham, and start your own driving journey with us.
+- [Pricing](https://azdriving.co.uk/pricing/): Driving lesson prices in Gloucester from £40 an hour, with block bookings, Pass Plus and refresher lessons. Separate rates for Stroud, Tewkesbury, Cheltenham.
+- [FAQs](https://azdriving.co.uk/faqs/): Answers about driving lessons in Gloucester: prices, booking, manual and automatic lessons, theory tests, practical tests and the areas we cover.
+- [Contact](https://azdriving.co.uk/contact/): Book driving lessons in Gloucester. Call or WhatsApp +44 7380 323268, email info@azdriving.co.uk or send an enquiry. Covering Stroud, Tewkesbury and Cheltenham.
+
+## Sitemap
+- [XML sitemap](https://azdriving.co.uk/sitemap.xml)
+- [HTML sitemap](https://azdriving.co.uk/sitemap/)

@@ -1,0 +1,18 @@
+# AZ Driving School
+User-agent: *
+Allow: /
+Disallow: /404.html
+
+# AI / answer-engine crawlers are welcome to read the public pages
+User-agent: GPTBot
+Allow: /
+User-agent: OAI-SearchBot
+Allow: /
+User-agent: ClaudeBot
+Allow: /
+User-agent: PerplexityBot
+Allow: /
+User-agent: Google-Extended
+Allow: /
+
+Sitemap: https://azdriving.co.uk/sitemap.xml
