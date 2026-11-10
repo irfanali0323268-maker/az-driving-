@@ -357,7 +357,7 @@ footer .btn:not(.p):hover{background:rgba(255,255,255,.18);color:#fff}
 @media(min-width:721px){.pg .gl h3{min-height:2.3em;margin-bottom:0}.pg .gl .pr{margin-top:6px}}
 
 /* ===== PREMIUM MOTION LAYER (v22) ===== */
-@view-transition{navigation:auto}
+@media(hover:hover) and (pointer:fine){@view-transition{navigation:auto}}
 ::view-transition-old(root){animation:vtout .28s var(--ease) both}
 ::view-transition-new(root){animation:vtin .45s var(--ease) both}
 @keyframes vtout{to{opacity:0;transform:translateY(-8px)}}
@@ -500,3 +500,38 @@ footer.done .fqk a,footer.done .fg>div>a,footer.done .fc{transition-delay:0s!imp
 footer .fg>div>a:not(.fc):not(.btn):not(.fpr){display:flex}
 footer .fg>div>a.fpr{display:inline-flex;flex-wrap:nowrap;white-space:nowrap;width:auto;min-height:0;height:auto;line-height:1.2;gap:10px;margin-top:10px;padding:10px 18px;font-size:.86rem}
 footer .fg>div>a.fpr:after{flex:none}
+
+/* ===== MOBILE / TOUCH HARDENING (fixes flicker, glitchy photos and boxes) ===== */
+html,body{overflow-x:clip;-webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%}
+img,video,svg{max-width:100%}
+.wbd{max-height:calc(100dvh - 260px)}
+.cc img,.cf .cc{-webkit-backface-visibility:hidden;backface-visibility:hidden}
+@keyframes upm{from{opacity:0;transform:translateY(16px)}}
+@media(hover:none),(max-width:900px){
+ /* heavy backdrop blurs are the main cause of flickering photos on phones: use solid frosted panels */
+ .gl,.btn:not(.p),.seg,.wp,.pw,.fc .ci,footer .fb2,.gl>.fx{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+ .gl:not(.pe):not(.nv):not(.cn){background:linear-gradient(150deg,rgba(255,255,255,.95),rgba(255,255,255,.8))}
+ .gl>.fx{background:linear-gradient(150deg,rgba(255,255,255,.95),rgba(255,255,255,.82))!important}
+ .btn:not(.p){background:linear-gradient(180deg,#fff,rgba(255,255,255,.85))}
+ nav#nav,.dock{-webkit-backdrop-filter:blur(12px) saturate(1.5)!important;backdrop-filter:blur(12px) saturate(1.5)!important}
+ /* stop continuous repaint animations */
+ .aurora i,.pr,.feat,.bdg,.mc .btn.p,nav#nav:after,.fx:after,footer:before,footer .fg>div>a.fpr:before{animation:none!important}
+ .aurora i{will-change:auto}
+ #sp{display:none}
+ .pe,.pe:hover,.js .rv.in.pe:hover{--f:20px!important;animation:none!important}
+ /* entrance animations without blur filters */
+ nav#nav,.hero h1,.ph h1,.hero .lead,.ph .lead,.hero .row,.hero .fine,.hero .chip{animation-name:upm!important}
+ /* no sticky hover effects after a tap */
+ .js .rv.in.gl:hover,.js .rv.in.pe:hover{transform:none!important}
+ .cp:hover img,.sgc:hover img,.area:hover .ico3d img{transform:none!important}
+}
+@media(max-width:900px){
+ /* logo video: clean white card instead of blend mode (blend modes glitch on phones) */
+ .vd{background:#fff;border-radius:26px;overflow:hidden;box-shadow:0 20px 40px -22px rgba(11,31,77,.35)}
+ .vd video{mix-blend-mode:normal}
+}
+@media(max-width:720px){
+ .fqk a,footer .fg>div>a:not(.fc):not(.btn):not(.fpr){min-height:44px}
+ .fqk{column-gap:24px}
+ .ico3d img{animation-duration:7s}
+}

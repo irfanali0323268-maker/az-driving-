@@ -1,6 +1,6 @@
 const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)],RM=matchMedia('(prefers-reduced-motion:reduce)').matches;
 /* ambient particles */
-(()=>{const c=$('#sp');if(!c)return;const x=c.getContext('2d');let W,H,P=[],raf,last=0;
+(()=>{const c=$('#sp');if(!c)return;if(matchMedia('(max-width:900px),(hover:none)').matches){c.remove();return}const x=c.getContext('2d');let W,H,P=[],raf,last=0;
 function init(){const d=Math.min(devicePixelRatio||1,1.5);W=innerWidth;H=innerHeight;c.width=W*d;c.height=H*d;x.setTransform(d,0,0,d,0,0);
 const n=Math.min(Math.floor(W*H/1e4*.5),90);P=Array.from({length:n},()=>({x:Math.random()*W,y:Math.random()*H,s:.8+Math.random()*1.5,a:.12+Math.random()*.35,vx:(Math.random()-.5)*.1,vy:.08+Math.random()*.16,g:Math.random()<.18}))}
 function draw(){x.clearRect(0,0,W,H);for(const p of P){x.beginPath();x.arc(p.x,p.y,p.s,0,6.2832);x.fillStyle=p.g?`rgba(200,150,12,${p.a})`:`rgba(11,31,77,${p.a*.7})`;x.fill()}}
@@ -156,7 +156,7 @@ split=t=>seg?[...seg.segment(t)].map(s=>s.segment):[...t],
 sleep=ms=>new Promise(r=>setTimeout(r,ms)),frame=()=>new Promise(r=>requestAnimationFrame(()=>r())),
 clamp=(v,a,b)=>Math.min(b,Math.max(a,v)),
 tw=(dur,fn)=>new Promise(res=>{const t0=performance.now(),f=t=>{const p=Math.min((t-t0)/(dur*1000),1);fn(p);p<1?requestAnimationFrame(f):res()};requestAnimationFrame(f)}),
-GOLD='#e9b93a',NAVY='#0b1f4d',ST=18,BLUR=12;
+GOLD='#e9b93a',NAVY='#0b1f4d',ST=18,BLUR=matchMedia('(max-width:900px)').matches?5:12;
 els.forEach(el=>{
 const full=[el.textContent.trim(),...(el.dataset.words||'').split('|').filter(Boolean)];if(full.length<2)return;
 /* a trailing full stop is drawn by the blob itself, so strip it from the animated letters */

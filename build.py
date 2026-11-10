@@ -16,7 +16,7 @@ WA_ICON = '<svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor" a
 FOOT_Q = [('How much are lessons?', 'Hi AZ Driving School, how much are your driving lessons?'), ('Manual or automatic?', 'Hi, do you offer both manual and automatic lessons?'),
           ('Which areas do you cover?', 'Hi, which areas do you cover for driving lessons?'), ('Do you teach beginners?', 'Hi, do you teach complete beginners?'), ('How do I book?', 'Hi, how do I book my first lesson?')]
 MAPS = 'https://www.google.com/maps/search/?api=1&query=Diamond+Jubilee+Close+Gloucester+GL1+4LR'
-V = '28'  # cache-bust for css/js
+V = '29'  # cache-bust for css/js
 
 esc = html.escape
 def slug(s): return re.sub(r'[^a-z0-9]+', '-', s.lower()).strip('-')
