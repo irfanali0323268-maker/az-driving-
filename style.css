@@ -535,3 +535,23 @@ img,video,svg{max-width:100%}
  .fqk{column-gap:24px}
  .ico3d img{animation-duration:7s}
 }
+
+/* ===== MOBILE FIXES v2 (from iPhone screenshots) ===== */
+@media(max-width:720px){
+ /* the generic "text link" tap-area rule was stripping the side padding from card links and pills */
+ main a.gl{display:block!important;padding:26px 22px 22px!important}
+ main a.area{padding-top:20px!important}
+ main .rel a{display:inline-flex!important;align-items:center;min-height:44px;padding:10px 20px!important;background:rgba(255,255,255,.92)}
+ .ico3d{width:96px;height:96px;margin:0 0 6px -6px}
+ .area .more{display:inline-flex!important;padding:8px 0!important}
+ /* tidy bottom spacing: footer already clears the dock */
+ body{padding-bottom:0}
+ footer{margin-top:28px}
+ .dock a:not(.bk){background:rgba(255,255,255,.92)}
+}
+@media(max-width:900px),(hover:none){
+ /* static backdrop: no drifting blobs, no repaint bands when the Safari toolbar collapses */
+ .aurora{top:-12vh;bottom:-12vh;height:auto;
+  background:radial-gradient(70% 38% at 0% 6%,rgba(70,120,235,.34),transparent 72%),radial-gradient(60% 36% at 100% 16%,rgba(241,196,83,.42),transparent 72%),radial-gradient(70% 34% at 40% 100%,rgba(31,79,181,.14),transparent 74%),linear-gradient(180deg,#f9f7f0,#efece1)}
+ .aurora i{display:none}
+}
