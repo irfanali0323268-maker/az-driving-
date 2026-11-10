@@ -16,7 +16,7 @@ WA_ICON = '<svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor" a
 FOOT_Q = [('How much are lessons?', 'Hi AZ Driving School, how much are your driving lessons?'), ('Manual or automatic?', 'Hi, do you offer both manual and automatic lessons?'),
           ('Which areas do you cover?', 'Hi, which areas do you cover for driving lessons?'), ('Do you teach beginners?', 'Hi, do you teach complete beginners?'), ('How do I book?', 'Hi, how do I book my first lesson?')]
 MAPS = 'https://www.google.com/maps/search/?api=1&query=Diamond+Jubilee+Close+Gloucester+GL1+4LR'
-V = '30'  # cache-bust for css/js
+V = '31'  # cache-bust for css/js
 
 esc = html.escape
 def slug(s): return re.sub(r'[^a-z0-9]+', '-', s.lower()).strip('-')
@@ -41,9 +41,9 @@ COURSE_ALT = ['Driver’s hands on a steering wheel on an open road', 'Automatic
  'Graduation cap with gold tassel', 'Cars driving on a motorway', 'Small white car beside a young green plant']
 
 PRICES = {
- 'gl': ('Gloucester', 40, [('First 2 Lessons', 70, '2 Hours'), ('Standard Lesson', 40, '1 Hour'), ('Block of 5 Lessons', 190, '5 Hours'),
+ 'gl': ('Gloucester', 40, [('First 2 Lessons', 60, '2 Hours'), ('Standard Lesson', 40, '1 Hour'), ('Block of 5 Lessons', 190, '5 Hours'),
         ('Block of 10 Lessons', 370, '10 Hours'), ('Pass Plus', 250, 'Approximately 5 Hours'), ('Motorway & Refresher', 85, '2 Hours'), ('Eco Driving', 90, '2 Hours')]),
- 'st': ('Stroud, Tewkesbury & Cheltenham', 45, [('First 2 Lessons', 70, '2 Hours'), ('Standard Lesson', 45, '1 Hour'), ('Block of 5 Lessons', 215, '5 Hours'),
+ 'st': ('Stroud, Tewkesbury & Cheltenham', 45, [('First 2 Lessons', 60, '2 Hours'), ('Standard Lesson', 45, '1 Hour'), ('Block of 5 Lessons', 215, '5 Hours'),
         ('Block of 10 Lessons', 430, '10 Hours'), ('Pass Plus', 250, 'Approximately 5 Hours'), ('Motorway & Refresher', 90, '2 Hours'), ('Eco Driving', 90, '2 Hours')]),
 }
 
@@ -59,7 +59,7 @@ FAQ = [
   ('Should I learn in a manual or an automatic car?', 'An automatic car has fewer controls, so you can concentrate on the road. A manual licence lets you drive both types of car. Your instructor can talk through which suits you best.')]),
  ('Pricing & Payments', [
   ('How much does a lesson cost?', 'A standard hour is £40 in Gloucester and £45 in Stroud, Tewkesbury and Cheltenham. Please confirm availability and pricing before booking.'),
-  ('How much do driving lessons cost in Gloucester?', 'A standard one-hour lesson is £40 and your first two lessons (2 hours) are £70. Blocks of 5 and 10 lessons cost £190 and £370.'),
+  ('How much do driving lessons cost in Gloucester?', 'A standard one-hour lesson is £40 and your first two lessons (2 hours) are £60. Blocks of 5 and 10 lessons cost £190 and £370.'),
   ('Do you offer block bookings?', 'Yes. In Gloucester a block of 5 lessons is £190 and a block of 10 is £370. In Stroud, Tewkesbury and Cheltenham they are £215 and £430.')]),
  ('Booking & Scheduling', [
   ('How do I book?', f'Call or WhatsApp {PHONE}, email {EMAIL} or use the contact form.'),
@@ -188,7 +188,7 @@ def body_index():
          ('<span data-n="4">4</span>', 'Locations served'), ('<span aria-hidden="true">✓</span><span class="sr">Yes</span>', 'Experienced instructors')])
     steps = ''.join(f'<div class="gl pe rv step">{PE}<span class="num">0{i+1}</span><h3>{t}</h3><p>{d}</p></div>' for i, (t, d) in enumerate([
         ('Get in touch', f'Call, WhatsApp, email or use the enquiry form. Tell us about your experience and which area you are in.'),
-        ('Start with two lessons', 'Your first two lessons (2 hours) are £70, so you can meet your instructor and see how you get on.'),
+        ('Start with two lessons', 'Your first two lessons (2 hours) are £60, so you can meet your instructor and see how you get on.'),
         ('Learn at your pace', 'Your instructor assesses your progress and gives you honest advice on what to practise next.'),
         ('Take your tests', 'Book your theory and practical tests through GOV.UK. Your instructor can advise when you are ready.')]))
     areas = ''.join(f'<a class="gl pe rv area" href="/pricing/#{"gl" if a=="Gloucester" else "st"}">{PE}<span class="ico3d"><img src="/assets/areas/{ICON3D[a]}.webp" alt="" width="288" height="288" loading="lazy" decoding="async"></span><h3>Driving lessons in {a}</h3>'
@@ -208,7 +208,7 @@ def body_index():
 <h1><span class="g1">Learn to Drive.</span><br><span class="gr">Drive with</span><br><span class="brv" data-blob="14" data-words="Control.|Skill.|Calm.">Confidence.</span></h1>
 <p class="lead">Your journey to becoming a confident, safe and independent driver starts with AZ Driving School in Gloucester. Friendly, experienced instructors, manual and automatic cars, and lessons planned around you.</p>
 <div class="row"><a class="btn p" href="/contact/">Book Your First Lesson</a><a class="btn" href="/driving-courses/">Explore Our Courses</a></div>
-<p class="fine">First two lessons (2 hours) £70 · Call or WhatsApp <a href="tel:{PHONE_D}">{PHONE}</a></p></div>
+<p class="fine">First two lessons (2 hours) £60 · Call or WhatsApp <a href="tel:{PHONE_D}">{PHONE}</a></p></div>
 <div class="hv">{VID}<div class="chip gl" style="top:-4%;left:-3%">Manual &amp; Automatic</div><div class="chip gl" style="top:44%;right:-4%;animation-delay:-2s">From £40 / hour</div><div class="chip gl" style="bottom:-19%;left:34%;animation-delay:-4s">4 areas covered</div></div></section>
 <section class="w rv"><div class="gl stats">{stats}</div></section>
 <section class="w two"><div class="rv"><span class="eyebrow">About us</span><h2>Your trusted driving school in <span class="brv" data-blob="9" data-words="Stroud|Tewkesbury|Cheltenham">Gloucester</span></h2>
@@ -314,7 +314,7 @@ def body_contact():
     nxt = ''.join(f'<div class="gl pe rv step">{PE}<span class="num">0{i+1}</span><h3>{t}</h3><p>{d}</p></div>' for i, (t, d) in enumerate([
         ('Send your enquiry', 'Use the form, call, WhatsApp or email. Tell us your area and the course you are interested in.'),
         ('We get back to you', 'We reply using your preferred contact method and confirm availability and pricing.'),
-        ('Book your first lesson', 'Your first two lessons (2 hours) are £70, so you can meet your instructor and get started.')]))
+        ('Book your first lesson', 'Your first two lessons (2 hours) are £60, so you can meet your instructor and get started.')]))
     return (head('Contact', 'Let’s Get You on the Road.', 'Call, WhatsApp, email or send an enquiry. We will get back to you.', 'contact')
       + f'<section class="w cg">{info_card}{form}</section>'
       + f'<section class="w">{sec_head("What happens next", "Three simple <span class=gr>steps</span>")}<div class="grid">{nxt}</div></section>')
@@ -443,7 +443,7 @@ Sitemap: {BASE}/sitemap.xml
 """)
 write('site.webmanifest', json.dumps({"name": "AZ Driving School", "short_name": "AZ Driving", "description": "Manual and automatic driving lessons in Gloucester, Stroud, Tewkesbury and Cheltenham.", "start_url": "/", "scope": "/", "display": "browser", "lang": "en-GB", "background_color": "#f5f3ec", "theme_color": "#0b1f4d", "icons": [{"src": "/assets/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"}, {"src": "/assets/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"}, {"src": "/assets/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}]}, indent=1))
 write('llms.txt', f"""# AZ Driving School
-> Friendly, professional manual and automatic driving lessons in Gloucester, Stroud, Tewkesbury and Cheltenham (UK). Beginner, intensive, refresher, motorway, Pass Plus and eco driving courses. First two lessons (2 hours) £70.
+> Friendly, professional manual and automatic driving lessons in Gloucester, Stroud, Tewkesbury and Cheltenham (UK). Beginner, intensive, refresher, motorway, Pass Plus and eco driving courses. First two lessons (2 hours) £60.
 
 Contact: {PHONE} (call or WhatsApp) | {EMAIL} | {ADDR}
 

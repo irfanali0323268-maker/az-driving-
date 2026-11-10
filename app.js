@@ -46,8 +46,9 @@ const f=$('#f');if(f){const c=new URLSearchParams(location.search).get('course')
 f.onsubmit=e=>{e.preventDefault();let bad=0;const S=(id,m)=>{const el=$('#'+id);el.nextElementSibling.textContent=m||'';el.setAttribute('aria-invalid',!!m);if(m)bad++},v=id=>$('#'+id).value.trim();
 S('n',v('n').length<2?'Please enter your name.':'');S('p',!/^[+\d][\d\s()-]{7,}$/.test(v('p'))?'Enter a valid phone number.':'');S('e',!/^\S+@\S+\.\S+$/.test(v('e'))?'Enter a valid email.':'');S('e2',v('e2')!==v('e')?'Emails do not match.':'');
 const st=$('#st');if(bad)return st.textContent='Please fix the highlighted fields.';
-st.textContent='Opening your email app. Your enquiry is only sent when you press Send there. No form service is connected yet, so you can also call or WhatsApp.';
-location.href='mailto:info@azdriving.co.uk?subject='+encodeURIComponent('Driving lesson enquiry')+'&body='+encodeURIComponent(`Name: ${v('n')}\nPhone: ${v('p')}\nEmail: ${v('e')}\nCourse: ${$('#c').value}\nLocation: ${$('#l').value}\nContact via: ${$('#m').value}\n\n${$('#g').value}`)}}
+st.textContent='Opening WhatsApp with your enquiry ready to send. Just press Send in WhatsApp.';
+const msg=`Hello AZ Driving School, I would like to enquire about driving lessons.\n\nName: ${v('n')}\nPhone: ${v('p')}\nEmail: ${v('e')}\nCourse: ${$('#c').value}\nLocation: ${$('#l').value}\nPreferred contact: ${$('#m').value}\n\nMessage: ${v('g')||'-'}`,url='https://wa.me/447380323268?text='+encodeURIComponent(msg);
+const w=window.open(url,'_blank');if(!w)location.href=url}}
 /* 3D gallery */
 const cf=$('#cf');if(cf){const cs=$$('.cc',cf),S=cs.length;let a=0,lk=0;cf.classList.add('on');
 function lay(){const cw=Math.min(330,cf.clientWidth*.7);cf.style.height=cw*1.33+70+'px';cs.forEach((c,i)=>{let r=i-a;if(r>S/2)r-=S;if(r<-S/2)r+=S;const x=Math.abs(r);c.style.width=cw+'px';c.style.height=cw*1.33+'px';c.style.zIndex=9-x;c.style.opacity=x>2?0:1;c.style.pointerEvents=x>2?'none':'auto';c.classList.toggle('ac',!r);c.setAttribute('aria-hidden',x>0?'true':'false');c.style.transform=`translate(-50%,-50%) translateX(${r*cw*.6}px) translateZ(${-x*220}px) rotateY(${-r*14}deg) scale(${1-x*.1})`})}
