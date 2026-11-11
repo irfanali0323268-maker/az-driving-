@@ -1,4 +1,6 @@
 build.py
+dev-server.js
+.env.local
 README.txt
 _headers
 _redirects

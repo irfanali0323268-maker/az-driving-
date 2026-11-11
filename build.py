@@ -477,6 +477,6 @@ _vc = {"$schema": "https://openapi.vercel.sh/vercel.json", "cleanUrls": True, "t
     {"source": "/llms.txt", "headers": [{"key": "Content-Type", "value": "text/plain; charset=utf-8"}]},
     {"source": "/site.webmanifest", "headers": [{"key": "Content-Type", "value": "application/manifest+json; charset=utf-8"}]}]}
 write('vercel.json', json.dumps(_vc, indent=2) + '\n')
-write('.vercelignore', 'build.py\nREADME.txt\n_headers\n_redirects\n__pycache__\n*.zip\n.DS_Store\n')
-write('.gitignore', '__pycache__/\n.DS_Store\n.vercel\n')
+write('.vercelignore', 'build.py\ndev-server.js\n.env.local\nREADME.txt\n_headers\n_redirects\n__pycache__\n*.zip\n.DS_Store\n')
+write('.gitignore', '__pycache__/\n.DS_Store\n.vercel\n.env.local\n')
 print('built', len(PAGES) + 2, 'pages')
