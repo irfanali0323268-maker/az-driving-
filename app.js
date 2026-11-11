@@ -1,4 +1,20 @@
 const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)],RM=matchMedia('(prefers-reduced-motion:reduce)').matches;
+/* intro: animated logo splash, once per visit; the site reveals itself when it ends */
+(()=>{const el=$('#intro'),root=document.documentElement;if(!el)return;
+if(!root.classList.contains('intro')){el.remove();return}
+const v=$('#iv',el),hv=$('#lv'),SHOW=3400,HARD=7000;let done=0,started=0,t1,t2;
+try{sessionStorage.setItem('azi','1')}catch(e){}
+if(hv)hv.pause();
+const end=()=>{if(done)return;done=1;clearTimeout(t1);clearTimeout(t2);removeEventListener('keydown',key);
+ el.classList.add('out');root.classList.remove('intro');
+ if(hv){hv.currentTime=0;const p=hv.play();if(p&&p.catch)p.catch(()=>{})}
+ $$('.rv:not(.in)').forEach(n=>{io.unobserve(n);io.observe(n)});
+ setTimeout(()=>el.remove(),900)},
+key=e=>{if(e.key==='Escape')end()},
+go=()=>{if(started||done)return;started=1;clearTimeout(t2);el.style.setProperty('--it',SHOW+'ms');el.classList.add('go');t1=setTimeout(end,SHOW)};
+v.addEventListener('playing',go,{once:true});v.addEventListener('error',()=>{started=0;go()},{once:true});
+t2=setTimeout(go,1500);setTimeout(end,HARD);
+$('.is',el).addEventListener('click',end);el.addEventListener('click',end);addEventListener('keydown',key)})();
 /* ambient particles */
 (()=>{const c=$('#sp');if(!c)return;if(matchMedia('(max-width:900px),(hover:none)').matches){c.remove();return}const x=c.getContext('2d');let W,H,P=[],raf,last=0;
 function init(){const d=Math.min(devicePixelRatio||1,1.5);W=innerWidth;H=innerHeight;c.width=W*d;c.height=H*d;x.setTransform(d,0,0,d,0,0);
@@ -23,7 +39,7 @@ L.forEach(a=>{a.addEventListener('mouseenter',()=>mv(a));a.addEventListener('foc
 document.addEventListener('pointermove',e=>{const g=e.target.closest&&e.target.closest('.gl');if(!g)return;const r=g.getBoundingClientRect();g.style.setProperty('--mx',e.clientX-r.left+'px');g.style.setProperty('--my',e.clientY-r.top+'px')},{passive:true});
 /* counters + reveal */
 function cnt(el){const n=+el.dataset.n;if(RM)return el.textContent=n.toLocaleString('en-GB');let t0;const f=t=>{t0=t0||t;const p=Math.min((t-t0)/1600,1);el.textContent=Math.round(n*(1-(1-p)**3)).toLocaleString('en-GB');p<1&&requestAnimationFrame(f)};requestAnimationFrame(f)}
-const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){const i=[...e.target.parentNode.children].indexOf(e.target);e.target.style.transitionDelay=Math.min(i,6)*70+'ms';setTimeout(()=>e.target.style.transitionDelay='',1200);e.target.classList.add('in');$$('[data-n]',e.target).forEach(cnt);io.unobserve(e.target)}}),{threshold:.12,rootMargin:'0px 0px -40px 0px'});
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting&&!document.documentElement.classList.contains('intro')){const i=[...e.target.parentNode.children].indexOf(e.target);e.target.style.transitionDelay=Math.min(i,6)*70+'ms';setTimeout(()=>e.target.style.transitionDelay='',1200);e.target.classList.add('in');$$('[data-n]',e.target).forEach(cnt);io.unobserve(e.target)}}),{threshold:.12,rootMargin:'0px 0px -40px 0px'});
 $$('.rv').forEach(e=>io.observe(e));
 /* pricing tabs (also opens #gl / #st) */
 const tabs=$$('.seg button');
@@ -43,12 +59,17 @@ $$('.q .btn',qz).forEach(b=>b.onclick=()=>{const i=+b.dataset.i,ok=+b.dataset.j=
 $('.ex',bx).textContent=ok?'Correct! '+QZ[i][3]:'Not quite. Try again.';if(ok)done[i]=1;const n=Object.keys(done).length;qs.textContent=n+' of '+QZ.length+' answered correctly'+(n===QZ.length?'. Well done!':'.')})}
 /* contact form */
 const f=$('#f');if(f){const c=new URLSearchParams(location.search).get('course');if(c){const o=$$('#c option').find(x=>x.textContent.toLowerCase()===c.toLowerCase());if(o)o.selected=true}
-f.onsubmit=e=>{e.preventDefault();let bad=0;const S=(id,m)=>{const el=$('#'+id);el.nextElementSibling.textContent=m||'';el.setAttribute('aria-invalid',!!m);if(m)bad++},v=id=>$('#'+id).value.trim();
+f.onsubmit=async e=>{e.preventDefault();let bad=0;const S=(id,m)=>{const el=$('#'+id);el.nextElementSibling.textContent=m||'';el.setAttribute('aria-invalid',!!m);if(m)bad++},v=id=>$('#'+id).value.trim();
 S('n',v('n').length<2?'Please enter your name.':'');S('p',!/^[+\d][\d\s()-]{7,}$/.test(v('p'))?'Enter a valid phone number.':'');S('e',!/^\S+@\S+\.\S+$/.test(v('e'))?'Enter a valid email.':'');S('e2',v('e2')!==v('e')?'Emails do not match.':'');
-const st=$('#st');if(bad)return st.textContent='Please fix the highlighted fields.';
-st.textContent='Opening WhatsApp with your enquiry ready to send. Just press Send in WhatsApp.';
-const msg=`Hello AZ Driving School, I would like to enquire about driving lessons.\n\nName: ${v('n')}\nPhone: ${v('p')}\nEmail: ${v('e')}\nCourse: ${$('#c').value}\nLocation: ${$('#l').value}\nPreferred contact: ${$('#m').value}\n\nMessage: ${v('g')||'-'}`,url='https://wa.me/447380323268?text='+encodeURIComponent(msg);
-const w=window.open(url,'_blank');if(!w)location.href=url}}
+const st=$('#st'),btn=$('button[type=submit]',f);st.className='fine';if(bad)return st.textContent='Please fix the highlighted fields.';
+const label=btn.textContent;btn.disabled=true;btn.textContent='Sending…';st.textContent='Sending your enquiry…';
+try{const r=await fetch('/api/contact/',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:v('n'),phone:v('p'),email:v('e'),course:$('#c').value,location:$('#l').value,method:$('#m').value,message:v('g'),website:v('web')})});
+const j=await r.json().catch(()=>({}));if(!r.ok||!j.ok)throw new Error(j.error||'send_failed');
+const nm=v('n').split(' ')[0],how=$('#m').value;
+f.innerHTML='<div class="ok" role="status"><span class="okc" aria-hidden="true">✓</span><h2>Thank you, <span class="nm"></span>!</h2><p>Your enquiry has been sent to AZ Driving School. We will get back to you by <b class="hw"></b> as soon as we can.</p><button class="btn" type="button">Send another enquiry</button></div>';
+$('.nm',f).textContent=nm;$('.hw',f).textContent=how.toLowerCase();$('.ok .btn',f).onclick=()=>location.reload();f.scrollIntoView({behavior:RM?'auto':'smooth',block:'center'})}
+catch(err){btn.disabled=false;btn.textContent=label;st.className='fine bad';
+st.innerHTML='Sorry, we could not send your enquiry just now. Please call <a href="tel:+447380323268">+44 7380 323268</a>, message us on <a href="https://wa.me/447380323268" target="_blank" rel="noopener">WhatsApp</a> or email <a href="mailto:info@azdriving.co.uk">info@azdriving.co.uk</a>.'}}}
 /* 3D gallery */
 const cf=$('#cf');if(cf){const cs=$$('.cc',cf),S=cs.length;let a=0,lk=0;cf.classList.add('on');
 function lay(){const cw=Math.min(330,cf.clientWidth*.7);cf.style.height=cw*1.33+70+'px';cs.forEach((c,i)=>{let r=i-a;if(r>S/2)r-=S;if(r<-S/2)r+=S;const x=Math.abs(r);c.style.width=cw+'px';c.style.height=cw*1.33+'px';c.style.zIndex=9-x;c.style.opacity=x>2?0:1;c.style.pointerEvents=x>2?'none':'auto';c.classList.toggle('ac',!r);c.setAttribute('aria-hidden',x>0?'true':'false');c.style.transform=`translate(-50%,-50%) translateX(${r*cw*.6}px) translateZ(${-x*220}px) rotateY(${-r*14}deg) scale(${1-x*.1})`})}

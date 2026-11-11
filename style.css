@@ -555,3 +555,29 @@ img,video,svg{max-width:100%}
   background:radial-gradient(70% 38% at 0% 6%,rgba(70,120,235,.34),transparent 72%),radial-gradient(60% 36% at 100% 16%,rgba(241,196,83,.42),transparent 72%),radial-gradient(70% 34% at 40% 100%,rgba(31,79,181,.14),transparent 74%),linear-gradient(180deg,#f9f7f0,#efece1)}
  .aurora i{display:none}
 }
+
+/* ===== Intro: animated logo splash (first visit of a session) ===== */
+#intro{display:none}
+html.intro{overflow:hidden}
+html.intro #intro{position:fixed;inset:0;z-index:1000;display:grid;place-items:center;
+ background:radial-gradient(60% 50% at 50% 44%,#fff 0,#f9f7f0 62%,#f5f3ec 100%);
+ transition:opacity .75s var(--ease),transform .75s var(--ease),visibility 0s .75s}
+#intro.out{opacity:0;visibility:hidden;transform:scale(1.05);pointer-events:none}
+#intro .ib{width:min(580px,88vw);text-align:center}
+#intro video{display:block;width:100%;height:auto;aspect-ratio:720/428;mix-blend-mode:multiply}
+#intro .ibar{display:block;position:relative;overflow:hidden;width:min(220px,52%);height:3px;margin:18px auto 0;border-radius:3px;background:rgba(11,31,77,.1)}
+#intro .ibar:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--gold),var(--gold2));transform:scaleX(0);transform-origin:0 50%}
+#intro.go .ibar:after{animation:ibar var(--it,3.4s) linear forwards}
+@keyframes ibar{to{transform:scaleX(1)}}
+#intro .is{position:absolute;right:max(20px,env(safe-area-inset-right));bottom:max(22px,env(safe-area-inset-bottom));padding:9px 20px;border-radius:99px;border:1px solid rgba(11,31,77,.16);background:rgba(255,255,255,.7);color:var(--navy);font:600 .85rem var(--sans);cursor:pointer;transition:background .25s,color .25s}
+#intro .is:hover,#intro .is:focus-visible{background:var(--navy);color:#fff;outline:0}
+html.intro main *,html.intro main :before,html.intro main :after,html.intro header *{animation-play-state:paused!important}
+
+/* ===== Contact form: honeypot, status, success panel ===== */
+.hp{position:absolute!important;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}
+form .fine.bad{color:#b3203a;font-weight:600}form .fine.bad a{color:#b3203a;text-decoration:underline}
+form .btn[disabled]{opacity:.7;cursor:progress;transform:none}
+.ok{text-align:center;padding:26px 6px 10px;animation:okin .7s var(--ease) both}
+.ok .okc{display:grid;place-items:center;width:68px;height:68px;margin:0 auto 18px;border-radius:50%;font-size:2rem;font-weight:700;color:var(--navy);background:linear-gradient(180deg,#f6d36b,#c8960c);box-shadow:0 14px 34px -10px rgba(200,150,12,.7)}
+.ok h2{font-size:1.7rem}.ok p{max-width:420px;margin-left:auto;margin-right:auto}
+@keyframes okin{from{opacity:0;transform:translateY(14px) scale(.98)}to{opacity:1;transform:none}}

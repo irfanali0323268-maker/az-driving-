@@ -16,7 +16,7 @@ WA_ICON = '<svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor" a
 FOOT_Q = [('How much are lessons?', 'Hi AZ Driving School, how much are your driving lessons?'), ('Manual or automatic?', 'Hi, do you offer both manual and automatic lessons?'),
           ('Which areas do you cover?', 'Hi, which areas do you cover for driving lessons?'), ('Do you teach beginners?', 'Hi, do you teach complete beginners?'), ('How do I book?', 'Hi, how do I book my first lesson?')]
 MAPS = 'https://www.google.com/maps/search/?api=1&query=Diamond+Jubilee+Close+Gloucester+GL1+4LR'
-V = '32'  # cache-bust for css/js
+V = '33'  # cache-bust for css/js
 
 esc = html.escape
 def slug(s): return re.sub(r'[^a-z0-9]+', '-', s.lower()).strip('-')
@@ -176,7 +176,7 @@ def price_panel(key, data):
 def inp(i, l, t='text', ac=''):
     return f'<div class="fld"><label for="{i}">{l}</label><input id="{i}" name="{i}" type="{t}" required{(" autocomplete=%s" % ac) if ac else ""}><div class="er" aria-live="polite"></div></div>'
 def sel(i, l, o):
-    return f'<div class="fld"><label for="{i}">{l}</label><select id="{i}">' + ''.join(f'<option>{x}</option>' for x in o) + '</select></div>'
+    return f'<div class="fld"><label for="{i}">{l}</label><select id="{i}" name="{i}">' + ''.join(f'<option>{x}</option>' for x in o) + '</select></div>'
 
 VID = ('<div class="vd"><video id="lv" autoplay muted loop playsinline preload="auto" poster="/assets/logo-poster.webp" width="720" height="427" '
        'aria-label="AZ Driving School animated logo"><source src="/assets/logo-animated.mp4" type="video/mp4"></video></div>')
@@ -310,6 +310,7 @@ def body_contact():
       f'<div class="fr">{sel("c","Select Course",[c[0] for c in COURSES])}{sel("l","Preferred Location",AREAS)}</div>'
       f'{sel("m","Preferred Contact Method",["Phone","WhatsApp","Email"])}'
       '<div class="fld"><label for="g">Message</label><textarea id="g" rows="4" placeholder="Tell us about your experience, preferred days or any questions"></textarea></div>'
+      '<div class="hp" aria-hidden="true"><label for="web">Leave this field empty</label><input id="web" name="web" type="text" tabindex="-1" autocomplete="off"></div>'
       '<p id="st" role="status" class="fine"></p><button class="btn p wide" type="submit">Send My Enquiry</button></form>')
     nxt = ''.join(f'<div class="gl pe rv step">{PE}<span class="num">0{i+1}</span><h3>{t}</h3><p>{d}</p></div>' for i, (t, d) in enumerate([
         ('Send your enquiry', 'Use the form, call, WhatsApp or email. Tell us your area and the course you are interested in.'),
@@ -378,11 +379,11 @@ def page(k, t, d, body, robots='index,follow,max-image-preview:large,max-snippet
       + ''.join(f'<a class="wq" href="{WA}?text={quote(m)}" target="_blank" rel="noopener">{q}<span aria-hidden="true">→</span></a>' for q, m in FOOT_Q) +
       f'<a class="wgo" href="{WA}?text={quote("Hi AZ Driving School, I would like to ask about driving lessons.")}" target="_blank" rel="noopener">{WA_ICON}<span>Start chat on WhatsApp</span></a></div></div>'
       '<button class="wf" id="wf" type="button" aria-expanded="false" aria-controls="wp" aria-label="Chat with us on WhatsApp">' + WA_ICON + '<span class="wt">Chat with us</span></button></div>')
-    return f'''<!DOCTYPE html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><script>document.documentElement.className="js"</script>
+    return f'''<!DOCTYPE html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><script>document.documentElement.className="js";try{{if(!sessionStorage.getItem("azi")&&!matchMedia("(prefers-reduced-motion:reduce)").matches&&!/bot|crawl|spider|lighthouse/i.test(navigator.userAgent))document.documentElement.className+=" intro"}}catch(e){{}}</script>
 <title>{t}</title><meta name="description" content="{d}"><meta name="robots" content="{robots}">{cn}<meta name="theme-color" content="#0b1f4d"><meta name="author" content="AZ Driving School"><meta name="geo.region" content="GB-GLS"><meta name="geo.placename" content="Gloucester"><link rel="manifest" href="/site.webmanifest"><link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml"><meta name="format-detection" content="telephone=no"><meta name="googlebot" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1"><meta name="bingbot" content="index,follow,max-snippet:-1,max-image-preview:large"><meta name="color-scheme" content="light"><meta name="application-name" content="AZ Driving School"><meta name="apple-mobile-web-app-title" content="AZ Driving"><meta name="msapplication-TileColor" content="#0b1f4d"><link rel="alternate" type="text/plain" title="LLMs" href="/llms.txt">{og}
 <link rel="icon" href="/favicon.ico?v={V}" sizes="48x48"><link rel="icon" type="image/png" sizes="32x32" href="/assets/icon-32.png?v={V}"><link rel="icon" type="image/png" sizes="96x96" href="/assets/icon-96.png?v={V}"><link rel="icon" type="image/png" sizes="192x192" href="/assets/icon-192.png?v={V}"><link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png?v={V}">{pre}<link rel="stylesheet" href="/style.css?v={V}">
 <!-- Google Search Console: add google-site-verification meta tag here --><!-- Bing Webmaster: add msvalidate.01 meta tag here --><!-- Google Analytics 4: add your gtag snippet (G-XXXXXXXXXX) here -->{sc}</head>
-<body><svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><filter id="lg" x="-5%" y="-5%" width="110%" height="110%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency=".012 .02" numOctaves="2" seed="7" result="n"/><feGaussianBlur in="n" stdDeviation="1.2" result="nb"/><feDisplacementMap in="SourceGraphic" in2="nb" scale="14" xChannelSelector="R" yChannelSelector="G"/></filter></svg><a class="skip" href="#main">Skip to content</a><div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div><canvas id="sp" aria-hidden="true"></canvas><div id="pb" aria-hidden="true"></div>
+<body><div id="intro"><div class="ib" aria-hidden="true"><video id="iv" muted playsinline preload="auto" poster="/assets/logo-poster.webp" width="720" height="428"></video><i class="ibar"></i></div><button class="is" type="button">Skip</button></div><script>if(document.documentElement.classList.contains("intro")){{var iv=document.getElementById("iv");iv.muted=true;iv.src="/assets/logo-animated.mp4";var ip=iv.play();if(ip&&ip.catch)ip.catch(function(){{}})}}</script><svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><filter id="lg" x="-5%" y="-5%" width="110%" height="110%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency=".012 .02" numOctaves="2" seed="7" result="n"/><feGaussianBlur in="n" stdDeviation="1.2" result="nb"/><feDisplacementMap in="SourceGraphic" in2="nb" scale="14" xChannelSelector="R" yChannelSelector="G"/></filter></svg><a class="skip" href="#main">Skip to content</a><div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div><canvas id="sp" aria-hidden="true"></canvas><div id="pb" aria-hidden="true"></div>
 <header class="top"><nav id="nav" aria-label="Main"><a class="lg" href="/" aria-label="AZ Driving School home"><img src="/assets/logo.webp" alt="AZ Driving School" width="67" height="34"></a><div class="ln" id="ln">{nv}</div><a class="btn p nb" href="/contact/">Book Your Lesson</a><button class="bg" id="bg" aria-label="Menu" aria-expanded="false" aria-controls="ln"><span></span><span></span></button></nav></header>
 <main id="main">{body}</main>
 <footer><div class="w fg"><div><img class="fl" src="/assets/logo.webp" alt="" width="120" height="61" loading="lazy"><p>Friendly, professional driving lessons in Gloucester, Stroud, Tewkesbury and Cheltenham. Manual and automatic, beginner to refresher.</p><div class="fcta"><a class="btn p fb1" href="/contact/">Book Your First Lesson</a><a class="btn fb2" href="tel:{PHONE_D}">Call us</a></div></div>
@@ -465,6 +466,7 @@ _sec = [{"key": "X-Content-Type-Options", "value": "nosniff"}, {"key": "Referrer
         {"key": "Cross-Origin-Opener-Policy", "value": "same-origin-allow-popups"}]
 _imm = [{"key": "Cache-Control", "value": "public, max-age=31536000, immutable"}]
 _vc = {"$schema": "https://openapi.vercel.sh/vercel.json", "cleanUrls": True, "trailingSlash": True,
+  "rewrites": [{"source": "/api/contact/", "destination": "/api/contact"}],
   "redirects": [{"source": f"/{k}.html", "destination": f"/{k}/", "permanent": True} for k in PAGES if k != 'index']
     + [{"source": "/index.html", "destination": "/", "permanent": True}, {"source": "/home", "destination": "/", "permanent": True}, {"source": "/home/", "destination": "/", "permanent": True}],
   "headers": [{"source": "/(.*)", "headers": _sec},

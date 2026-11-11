@@ -35,3 +35,16 @@ After changing content: edit build.py, run  python3 build.py,  commit and push -
 INDEXNOW (instant Bing/Yandex indexing)
 Key file a7c3e91d5b2f48e6a0d4c8f1b3e57290.txt is in the site root. After each deploy, open:
 https://www.bing.com/indexnow?url=https://azdriving.co.uk/&key=a7c3e91d5b2f48e6a0d4c8f1b3e57290
+
+CONTACT FORM -> EMAIL (info@azdriving.co.uk)
+The form posts to /api/contact/ (api/contact.js, a Vercel serverless function) which emails you through Resend.
+Setup (one time, ~10 minutes):
+  1. Create a free account at resend.com > Domains > Add azdriving.co.uk, add the DNS records it shows, wait for "Verified".
+  2. Resend > API Keys > Create API Key.
+  3. Vercel > Project > Settings > Environment Variables: add RESEND_API_KEY = (the key). Optional: MAIL_TO, MAIL_FROM.
+  4. Redeploy. Test the form on /contact/ - the enquiry arrives in info@azdriving.co.uk; pressing Reply answers the customer.
+If sending ever fails, the customer sees your phone, WhatsApp and email instead of losing the enquiry.
+
+INTRO ANIMATION
+The animated logo plays full screen once per browser session (about 3.4 s), has a Skip button / Esc key,
+and is skipped for reduced-motion users and search-engine bots. The site then fades in.
