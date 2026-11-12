@@ -4,11 +4,12 @@ Pages are written as clean URLs: /about-us/index.html -> https://azdriving.co.uk
 """
 import os, re, json, html, shutil, glob
 from urllib.parse import quote
+from blog_data import POSTS, DATE as POST_DATE
 
 BASE = 'https://azdriving.co.uk'
 PHONE_D, PHONE = '+447380323268', '+44 7380 323268'
 EMAIL = 'info@azdriving.co.uk'
-TODAY, TODAY_H = '2026-11-09', '9 November 2026'
+TODAY, TODAY_H = '2026-11-12', '12 November 2026'
 AREAS = ['Gloucester', 'Stroud', 'Tewkesbury', 'Cheltenham']
 ADDR = 'Diamond Jubilee Close, Gloucester, GL1\u00a04LR'
 WA = 'https://wa.me/447380323268'
@@ -16,14 +17,14 @@ WA_ICON = '<svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor" a
 FOOT_Q = [('How much are lessons?', 'Hi AZ Driving School, how much are your driving lessons?'), ('Manual or automatic?', 'Hi, do you offer both manual and automatic lessons?'),
           ('Which areas do you cover?', 'Hi, which areas do you cover for driving lessons?'), ('Do you teach beginners?', 'Hi, do you teach complete beginners?'), ('How do I book?', 'Hi, how do I book my first lesson?')]
 MAPS = 'https://www.google.com/maps/search/?api=1&query=Diamond+Jubilee+Close+Gloucester+GL1+4LR'
-V = '33'  # cache-bust for css/js
+V = '37'  # cache-bust for css/js
 
 esc = html.escape
 def slug(s): return re.sub(r'[^a-z0-9]+', '-', s.lower()).strip('-')
 
 # ----------------------------------------------------------------- CONTENT
 NAV = [('about-us', 'About Us'), ('driving-courses', 'Courses'), ('driving-theory-test', 'Theory Test'),
-       ('success-stories', 'Success Stories'), ('pricing', 'Pricing'), ('faqs', 'FAQs'), ('contact', 'Contact')]
+       ('success-stories', 'Success Stories'), ('pricing', 'Pricing'), ('blog', 'Blog'), ('faqs', 'FAQs'), ('contact', 'Contact')]
 NAMES = dict(NAV); NAMES['index'] = 'Home'
 
 COURSES = [
@@ -96,20 +97,23 @@ PAGES = {  # key: (title, meta description)
  'driving-theory-test': ('Theory Test Practice Quiz & Guide | AZ Driving School', 'Prepare for the UK car theory test: 50 questions, hazard perception, road signs, a free practice quiz and the official GOV.UK booking link.'),
  'success-stories': ('Learner Success Stories | AZ Driving School Gloucester', 'See photos of AZ Driving School learners in Gloucester, Stroud, Tewkesbury and Cheltenham, and start your own driving journey with us.'),
  'pricing': ('Driving Lesson Prices Gloucester | From £40 an Hour', 'Driving lesson prices in Gloucester from £40 an hour, with block bookings, Pass Plus and refresher lessons. Separate rates for Stroud, Tewkesbury, Cheltenham.'),
+ 'blog': ('Driving Lesson Tips & Guides | AZ Driving School Blog', 'Practical advice from AZ Driving School in Gloucester: how many lessons you need, theory and practical test tips, costs, manual vs automatic and more.'),
  'faqs': ('Driving Lessons FAQs | AZ Driving School Gloucester', 'Answers about driving lessons in Gloucester: prices, booking, manual and automatic lessons, theory tests, practical tests and the areas we cover.'),
  'contact': ('Book Driving Lessons Gloucester | Contact AZ Driving School', f'Book driving lessons in Gloucester. Call or WhatsApp {PHONE}, email {EMAIL} or send an enquiry. Covering Stroud, Tewkesbury and Cheltenham.'),
 }
-PAGE_IMAGES = {'index': [f'/assets/gallery/photo-{i}.webp' for i in list(range(1, 9)) + [20, 21, 22, 23]],
+PAGE_IMAGES = {'blog': [p['img'] for p in POSTS],
+ 'index': [f'/assets/gallery/photo-{i}.webp' for i in list(range(1, 9)) + [20, 21, 22, 23]],
  'about-us': [f'/assets/gallery/photo-{i}.webp' for i in (2, 5, 9)],
  'driving-courses': [f'/assets/courses/course-{i}.webp' for i in range(1, 9)],
  'success-stories': [f'/assets/gallery/photo-{i}.webp' for i in range(1, 28)]}
 RELATED = {
+ 'blog': [('driving-courses', 'Driving lessons in Gloucester'), ('pricing', 'Driving lesson prices'), ('contact', 'Book your first lesson')],
  'about-us': [('driving-courses', 'Explore our driving lessons in Gloucester'), ('pricing', 'See driving lesson prices'), ('contact', 'Contact AZ Driving School')],
- 'driving-courses': [('pricing', 'Driving lesson prices in Gloucester'), ('driving-theory-test', 'Driving theory test preparation'), ('contact', 'Book driving lessons in Gloucester')],
- 'pricing': [('driving-courses', 'Compare manual and automatic driving lessons'), ('faqs', 'Driving lesson FAQs'), ('contact', 'Book your first lesson')],
- 'driving-theory-test': [('faqs', 'Driving test questions answered'), ('driving-courses', 'Driving lessons in Gloucester'), ('contact', 'Book a lesson')],
+ 'driving-courses': [('blog', 'Driving lesson tips and guides'), ('pricing', 'Driving lesson prices in Gloucester'), ('driving-theory-test', 'Driving theory test preparation'), ('contact', 'Book driving lessons in Gloucester')],
+ 'pricing': [('blog', 'How much does it cost to learn to drive?'), ('driving-courses', 'Compare manual and automatic driving lessons'), ('faqs', 'Driving lesson FAQs'), ('contact', 'Book your first lesson')],
+ 'driving-theory-test': [('blog', 'Theory test tips: how to pass first time'), ('faqs', 'Driving test questions answered'), ('driving-courses', 'Driving lessons in Gloucester'), ('contact', 'Book a lesson')],
  'success-stories': [('driving-courses', 'Driving courses we offer'), ('pricing', 'Driving lesson prices'), ('contact', 'Book a lesson')],
- 'faqs': [('driving-theory-test', 'Theory test preparation'), ('pricing', 'Lesson prices'), ('contact', 'Contact AZ Driving School')],
+ 'faqs': [('blog', 'Driving lesson tips and guides'), ('driving-theory-test', 'Theory test preparation'), ('pricing', 'Lesson prices'), ('contact', 'Contact AZ Driving School')],
  'contact': [('driving-courses', 'Driving courses'), ('pricing', 'Driving lesson prices'), ('faqs', 'Driving lesson FAQs')]}
 UPDATED = {'pricing', 'faqs', 'driving-theory-test'}
 
@@ -224,7 +228,7 @@ def body_index():
     f'''<section class="w">{sec_head("Areas we cover", "Driving lessons across <span class=gr>Gloucestershire</span>")}<div class="grid">{areas}</div></section>
 <section class="w">{sec_head("Why AZ Driving School", "Why choose <span class=gr>AZ Driving School?</span>")}<div class="grid">{why}</div></section>
 <section class="w">{sec_head("Quick answers", "Common <span class=gr>questions</span>")}<div class="faq">{faq3}</div><p class="rv" style="margin-top:18px"><a class="more" href="/faqs/">Read all FAQs <span aria-hidden="true">→</span></a></p></section>'''
-    + CTA())
+    + latest_posts() + CTA())
 
 def body_about():
     cards_ = info([
@@ -320,7 +324,25 @@ def body_contact():
       + f'<section class="w cg">{info_card}{form}</section>'
       + f'<section class="w">{sec_head("What happens next", "Three simple <span class=gr>steps</span>")}<div class="grid">{nxt}</div></section>')
 
-BODIES = {'index': body_index, 'about-us': body_about, 'driving-courses': body_courses, 'driving-theory-test': body_theory,
+
+def fmt_date(d):
+    y, m, dd = d.split('-')
+    return f"{int(dd)} {['January','February','March','April','May','June','July','August','September','October','November','December'][int(m)-1]} {y}"
+
+def post_card(p):
+    return (f'<a class="gl pe rv bc" href="/blog/{p["slug"]}/">{PE}<img src="{p["img"]}" alt="" width="420" height="236" loading="lazy">'
+            f'<div class="bt"><span class="eyebrow">{p["tag"]}</span><h3>{p["title"]}</h3><p>{p["excerpt"]}</p>'
+            f'<span class="fine">{fmt_date(p["date"] if "date" in p else POST_DATE)} &middot; {p["mins"]} min read</span><span class="more">Read article <span aria-hidden="true">→</span></span></div></a>')
+
+def body_blog():
+    return (head('Blog', 'Driving Lesson <span class="gr">Tips &amp; Guides</span>', 'Friendly, practical advice from AZ Driving School for learners in Gloucester, Stroud, Tewkesbury and Cheltenham.', 'blog')
+      + f'<section class="w"><div class="grid blog">{"".join(post_card(p) for p in POSTS)}</div></section>' + CTA())
+
+def latest_posts():
+    return (f'<section class="w">{sec_head("From the blog", "Tips and <span class=gr>guides</span> for learners", "Straight answers on lessons, tests and costs.")}'
+            f'<div class="grid blog">{"".join(post_card(p) for p in POSTS[:3])}</div><p class="rv" style="margin-top:22px"><a class="more" href="/blog/">Read all articles <span aria-hidden="true">→</span></a></p></section>')
+
+BODIES = {'blog': body_blog, 'index': body_index, 'about-us': body_about, 'driving-courses': body_courses, 'driving-theory-test': body_theory,
           'success-stories': body_success, 'pricing': body_pricing, 'faqs': body_faqs, 'contact': body_contact}
 
 # ----------------------------------------------------------------- SCHEMA
@@ -335,8 +357,10 @@ BIZ = {"@type": ["EducationalOrganization", "LocalBusiness"], "@id": BASE + "/#b
 def ld(k, t, d):
     g = [BIZ]
     if k == 'index':
-        g.append({"@type": "WebSite", "@id": BASE + "/#website", "url": BASE + "/", "name": "AZ Driving School", "publisher": {"@id": BASE + "/#business"}, "inLanguage": "en-GB"})
-    ty = {'about-us': 'AboutPage', 'contact': 'ContactPage', 'faqs': 'FAQPage'}.get(k, 'WebPage')
+        g.append({"@type": "WebSite", "@id": BASE + "/#website", "url": BASE + "/", "name": "AZ Driving School", "alternateName": ["AZ Driving", "AZ Driving School Gloucester"], "publisher": {"@id": BASE + "/#business"}, "inLanguage": "en-GB"})
+        g.append({"@type": "ItemList", "@id": BASE + "/#navigation", "name": "Main navigation", "itemListElement": [{"@type": "SiteNavigationElement", "position": i + 1, "name": n, "url": U(u)} for i, (u, n) in enumerate(NAV)]})
+        g[-2]["hasPart"] = None; g[-2].pop("hasPart")
+    ty = {'about-us': 'AboutPage', 'contact': 'ContactPage', 'faqs': 'FAQPage', 'blog': 'CollectionPage'}.get(k, 'WebPage')
     pg = {"@type": ty, "@id": U(k) + "#page", "url": U(k), "name": t, "description": d, "inLanguage": "en-GB", "dateModified": TODAY, "isPartOf": {"@id": BASE + "/#website"}, "about": {"@id": BASE + "/#business"}, "publisher": {"@id": BASE + "/#business"}}
     if k != 'index': pg["breadcrumb"] = {"@id": U(k) + "#breadcrumb"}
     if k in PAGE_IMAGES: pg["primaryImageOfPage"] = {"@type": "ImageObject", "url": BASE + PAGE_IMAGES[k][0]}
@@ -345,6 +369,9 @@ def ld(k, t, d):
     g.append(pg)
     if k != 'index':
         g.append({"@type": "BreadcrumbList", "@id": U(k) + "#breadcrumb", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": BASE + "/"}, {"@type": "ListItem", "position": 2, "name": NAMES[k], "item": U(k)}]})
+    if k == 'blog':
+        g.append({"@type": "Blog", "@id": U('blog') + "#blog", "url": U('blog'), "name": "AZ Driving School Blog", "inLanguage": "en-GB", "publisher": {"@id": BASE + "/#business"},
+          "blogPost": [{"@type": "BlogPosting", "headline": p['title'], "url": BASE + "/blog/" + p['slug'] + "/", "datePublished": p.get('date', POST_DATE), "image": BASE + p['img']} for p in POSTS]})
     if k == 'pricing':
         for key, (area, std, items) in PRICES.items():
             g.append({"@type": "Service", "name": "Driving lessons – " + area, "serviceType": "Driving lessons", "provider": {"@id": BASE + "/#business"},
@@ -358,16 +385,17 @@ def ld(k, t, d):
     return json.dumps({"@context": "https://schema.org", "@graph": g}, ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/')
 
 # ----------------------------------------------------------------- LAYOUT
-def page(k, t, d, body, robots='index,follow,max-image-preview:large,max-snippet:-1', canon=True, schema=''):
+def page(k, t, d, body, robots='index,follow,max-image-preview:large,max-snippet:-1', canon=True, schema='', img='/assets/og-image.jpg', otype='website'):
     t, d = esc(t), esc(d)
     nv = ''.join(f'<a href="{L(u)}"{" class=on aria-current=page" if u == k else ""}>{n}</a>' for u, n in [('index', 'Home')] + NAV)
     nv += f'<div class="mc"><a class="btn" href="tel:{PHONE_D}">Call</a><a class="btn p" href="/contact/">Book Your Lesson</a></div>'
     ft = ''.join(f'<a href="{L(u)}">{n}</a>' for u, n in [('index', 'Home')] + NAV)
-    og = (f'<meta property="og:type" content="website"><meta property="og:site_name" content="AZ Driving School"><meta property="og:locale" content="en_GB">'
+    ogdim = '<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">' if img == '/assets/og-image.jpg' else ''
+    og = (f'<meta property="og:type" content="{otype}"><meta property="og:site_name" content="AZ Driving School"><meta property="og:locale" content="en_GB">'
           f'<meta property="og:title" content="{t}"><meta property="og:description" content="{d}"><meta property="og:url" content="{U(k)}">'
-          f'<meta property="og:image" content="{BASE}/assets/og-image.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">'
+          f'<meta property="og:image" content="{BASE}{img}"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">'
           f'<meta property="og:image:alt" content="AZ Driving School logo"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{t}">'
-          f'<meta name="twitter:description" content="{d}"><meta name="twitter:image" content="{BASE}/assets/og-image.jpg">') if canon else ''
+          f'<meta name="twitter:description" content="{d}"><meta name="twitter:image" content="{BASE}{img}">') if canon else ''
     cn = f'<link rel="canonical" href="{U(k)}"><link rel="alternate" hreflang="en-GB" href="{U(k)}"><link rel="alternate" hreflang="x-default" href="{U(k)}">' if canon else ''
     sc = f'<script type="application/ld+json">{schema}</script>' if schema else ''
     pre = '<link rel="preload" as="image" href="/assets/logo-poster.webp" fetchpriority="high">' if k == 'index' else ''
@@ -381,7 +409,7 @@ def page(k, t, d, body, robots='index,follow,max-image-preview:large,max-snippet
       '<button class="wf" id="wf" type="button" aria-expanded="false" aria-controls="wp" aria-label="Chat with us on WhatsApp">' + WA_ICON + '<span class="wt">Chat with us</span></button></div>')
     return f'''<!DOCTYPE html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><script>document.documentElement.className="js";try{{if(!sessionStorage.getItem("azi")&&!matchMedia("(prefers-reduced-motion:reduce)").matches&&!/bot|crawl|spider|lighthouse/i.test(navigator.userAgent))document.documentElement.className+=" intro"}}catch(e){{}}</script>
 <title>{t}</title><meta name="description" content="{d}"><meta name="robots" content="{robots}">{cn}<meta name="theme-color" content="#0b1f4d"><meta name="author" content="AZ Driving School"><meta name="geo.region" content="GB-GLS"><meta name="geo.placename" content="Gloucester"><link rel="manifest" href="/site.webmanifest"><link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml"><meta name="format-detection" content="telephone=no"><meta name="googlebot" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1"><meta name="bingbot" content="index,follow,max-snippet:-1,max-image-preview:large"><meta name="color-scheme" content="light"><meta name="application-name" content="AZ Driving School"><meta name="apple-mobile-web-app-title" content="AZ Driving"><meta name="msapplication-TileColor" content="#0b1f4d"><link rel="alternate" type="text/plain" title="LLMs" href="/llms.txt">{og}
-<link rel="icon" href="/favicon.ico?v={V}" sizes="48x48"><link rel="icon" type="image/png" sizes="32x32" href="/assets/icon-32.png?v={V}"><link rel="icon" type="image/png" sizes="96x96" href="/assets/icon-96.png?v={V}"><link rel="icon" type="image/png" sizes="192x192" href="/assets/icon-192.png?v={V}"><link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png?v={V}">{pre}<link rel="stylesheet" href="/style.css?v={V}">
+<link rel="icon" type="image/png" sizes="48x48" href="/assets/icon-48.png?v={V}"><link rel="icon" href="/favicon.ico?v={V}" sizes="any"><link rel="shortcut icon" href="/favicon.ico?v={V}"><link rel="icon" type="image/png" sizes="32x32" href="/assets/icon-32.png?v={V}"><link rel="icon" type="image/png" sizes="96x96" href="/assets/icon-96.png?v={V}"><link rel="icon" type="image/png" sizes="192x192" href="/assets/icon-192.png?v={V}"><link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png?v={V}">{pre}<link rel="stylesheet" href="/style.css?v={V}">
 <!-- Google Search Console: add google-site-verification meta tag here --><!-- Bing Webmaster: add msvalidate.01 meta tag here --><!-- Google Analytics 4: add your gtag snippet (G-XXXXXXXXXX) here -->{sc}</head>
 <body><div id="intro"><div class="ib" aria-hidden="true"><video id="iv" muted playsinline preload="auto" poster="/assets/logo-poster.webp" width="720" height="428"></video><i class="ibar"></i></div><button class="is" type="button">Skip</button></div><script>if(document.documentElement.classList.contains("intro")){{var iv=document.getElementById("iv");iv.muted=true;iv.src="/assets/logo-animated.mp4";var ip=iv.play();if(ip&&ip.catch)ip.catch(function(){{}})}}</script><svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><filter id="lg" x="-5%" y="-5%" width="110%" height="110%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency=".012 .02" numOctaves="2" seed="7" result="n"/><feGaussianBlur in="n" stdDeviation="1.2" result="nb"/><feDisplacementMap in="SourceGraphic" in2="nb" scale="14" xChannelSelector="R" yChannelSelector="G"/></filter></svg><a class="skip" href="#main">Skip to content</a><div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div><canvas id="sp" aria-hidden="true"></canvas><div id="pb" aria-hidden="true"></div>
 <header class="top"><nav id="nav" aria-label="Main"><a class="lg" href="/" aria-label="AZ Driving School home"><img src="/assets/logo.webp" alt="AZ Driving School" width="67" height="34"></a><div class="ln" id="ln">{nv}</div><a class="btn p nb" href="/contact/">Book Your Lesson</a><button class="bg" id="bg" aria-label="Menu" aria-expanded="false" aria-controls="ln"><span></span><span></span></button></nav></header>
@@ -406,20 +434,47 @@ for k, (t, d) in PAGES.items():
         b += ('<section class="w rv"><div class="rel"><b>Related:</b> ' + ''.join(f'<a href="{L(x)}">{lbl}</a>' for x, lbl in RELATED[k]) + '</div>'
               + (f'<p class="fine">Page last updated: {TODAY_H}.</p>' if k in UPDATED else '') + '</section>')
     write('index.html' if k == 'index' else f'{k}/index.html', page(k, t, d, b, schema=ld(k, t, d)))
+# ---- blog posts
+def wc(h): return len(re.sub(r'<[^>]+>', ' ', h).split())
+def post_ld(p, t, d):
+    u = f"{BASE}/blog/{p['slug']}/"; dt = p.get('date', POST_DATE)
+    g = [BIZ, {"@type": "BlogPosting", "@id": u + "#article", "headline": p['title'], "description": d, "url": u, "mainEntityOfPage": {"@type": "WebPage", "@id": u},
+      "image": [BASE + p['img']], "datePublished": dt, "dateModified": dt, "inLanguage": "en-GB", "articleSection": p['tag'], "wordCount": wc(p['body']),
+      "author": {"@id": BASE + "/#business"}, "publisher": {"@id": BASE + "/#business"}, "isPartOf": {"@id": U('blog') + "#blog"},
+      "about": {"@id": BASE + "/#business"}},
+      {"@type": "BreadcrumbList", "@id": u + "#breadcrumb", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": BASE + "/"},
+        {"@type": "ListItem", "position": 2, "name": "Blog", "item": U('blog')}, {"@type": "ListItem", "position": 3, "name": p['title'], "item": u}]}]
+    return json.dumps({"@context": "https://schema.org", "@graph": g}, ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/')
+BYSLUG = {p['slug']: p for p in POSTS}
+for p in POSTS:
+    p.setdefault('date', POST_DATE)
+    key = 'blog/' + p['slug']
+    NAMES[key] = p['title']
+    rel = ''.join(f'<a class="rl" href="/blog/{x}/">{BYSLUG[x]["title"]}</a>' for x in p['related'])
+    body = (f'<nav class="cr w" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li><a href="/blog/">Blog</a></li><li aria-current="page">{esc(p["title"])}</li></ol></nav>'
+      f'<article class="w post"><header class="ph"><span class="eyebrow">{p["tag"]}</span><h1>{p["title"]}</h1>'
+      f'<p class="fine">By AZ Driving School &middot; <time datetime="{p["date"]}">{fmt_date(p["date"])}</time> &middot; {p["mins"]} min read</p></header>'
+      f'<img class="hero-img" src="{p["img"]}" alt="{esc(p["title"])}" width="420" height="236" fetchpriority="high">'
+      f'<div class="gl prose">{p["body"]}</div></article>'
+      f'<section class="w rv"><div class="sh"><span class="eyebrow">Keep reading</span><h2>More <span class="gr">guides</span></h2></div><div class="relposts">{rel}</div></section>'
+      + CTA('Ready to Start Driving?', 'Call, WhatsApp or send an enquiry and we will help you choose the right lessons in Gloucester, Stroud, Tewkesbury or Cheltenham.'))
+    write(f'blog/{p["slug"]}/index.html', page(key, p['seo'], p['desc'], body, schema=post_ld(p, p['seo'], p['desc']), img=p['img'], otype='article'))
 write('404.html', page('404', 'Page not found | AZ Driving School', 'Sorry, we could not find that page.',
   '<section class="w" style="padding:110px 20px;text-align:center"><div class="gl cta"><h1>404</h1><p>Sorry, we could not find that page.</p><div class="row c"><a class="btn p" href="/">Back to home</a><a class="btn" href="/contact/">Contact us</a></div></div></section>',
   robots='noindex,follow', canon=False))
 
 def sm_img(k):
-    return ''.join(f'<image:image><image:loc>{BASE}{u}</image:loc></image:image>' for u in PAGE_IMAGES.get(k, []))
+    imgs = PAGE_IMAGES.get(k, [])
+    if k.startswith('blog/'): imgs = [BYSLUG[k[5:]]['img']]
+    return ''.join(f'<image:image><image:loc>{BASE}{u}</image:loc></image:image>' for u in imgs)
 NAMES['sitemap'] = 'Sitemap'
 SM_T, SM_D = 'Sitemap | AZ Driving School Gloucester', 'Every page on the AZ Driving School website: courses, prices, theory test help, FAQs and contact details for Gloucester, Stroud, Tewkesbury and Cheltenham.'
 sm_body = ('<section class="w"><div class="gl"><span class="eyebrow">Sitemap</span><h1>Site<span class="gr">map</span></h1><p class="lead">Every page on our website in one place.</p><ul class="al smp">'
-  + ''.join(f'<li><a href="{L(k)}"><b>{NAMES[k]}</b></a> <span class="fine">- {PAGES[k][1]}</span></li>' for k in PAGES) + '</ul></div></section>')
+  + ''.join(f'<li><a href="{L(k)}"><b>{NAMES[k]}</b></a> <span class="fine">- {PAGES[k][1]}</span></li>' for k in PAGES) + ''.join(f'<li><a href="/blog/{p["slug"]}/"><b>{p["title"]}</b></a> <span class="fine">- {p["desc"]}</span></li>' for p in POSTS) + '</ul></div></section>')
 write('sitemap/index.html', page('sitemap', SM_T, SM_D, sm_body, schema=ld('sitemap', SM_T, SM_D)))
-ALL = list(PAGES) + ['sitemap']
+ALL = list(PAGES) + ['blog/' + p['slug'] for p in POSTS] + ['sitemap']
 def sm_alt(k): return f'<xhtml:link rel="alternate" hreflang="en-GB" href="{U(k)}"/><xhtml:link rel="alternate" hreflang="x-default" href="{U(k)}"/>'
-def pri(k): return "1.0" if k == "index" else ("0.9" if k in ("driving-courses", "pricing", "contact") else ("0.3" if k == "sitemap" else "0.7"))
+def pri(k): return "1.0" if k == "index" else ("0.8" if k == "blog" or k.startswith("blog/") else "0.9" if k in ("driving-courses", "pricing", "contact") else ("0.3" if k == "sitemap" else "0.7"))
 write('sitemap.xml', '<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml">'
   + ''.join(f'<url><loc>{U(k)}</loc>{sm_alt(k)}<lastmod>{TODAY}</lastmod><changefreq>{"weekly" if k in ("index","pricing") else "monthly"}</changefreq><priority>{pri(k)}</priority>{sm_img(k)}</url>' for k in ALL) + '</urlset>')
 write('sitemap.xsl', '<?xml version="1.0" encoding="UTF-8"?><xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:s="http://www.sitemaps.org/schemas/sitemap/0.9"><xsl:output method="html" encoding="UTF-8"/><xsl:template match="/"><html lang="en-GB"><head><meta charset="utf-8"/><meta name="robots" content="noindex"/><title>XML Sitemap | AZ Driving School</title><style>body{font:16px/1.6 -apple-system,Segoe UI,Arial,sans-serif;background:#f5f3ec;color:#0a1a40;margin:0;padding:32px}main{max-width:860px;margin:auto;background:#fff;border-radius:20px;padding:28px;box-shadow:0 20px 50px -20px rgba(11,31,77,.3)}h1{color:#0b1f4d;margin-top:0}a{color:#1f4fb5}li{padding:6px 0;border-bottom:1px solid #eee}small{color:#667}</style></head><body><main><h1>AZ Driving School - XML Sitemap</h1><p>This sitemap helps search engines find every page.</p><ul><xsl:for-each select="s:urlset/s:url"><li><a href="{s:loc}"><xsl:value-of select="s:loc"/></a> <small>updated <xsl:value-of select="s:lastmod"/></small></li></xsl:for-each></ul></main></body></html></xsl:template></xsl:stylesheet>')
@@ -449,7 +504,7 @@ write('llms.txt', f"""# AZ Driving School
 Contact: {PHONE} (call or WhatsApp) | {EMAIL} | {ADDR}
 
 ## Pages
-""" + ''.join(f'- [{NAMES[k]}]({U(k)}): {PAGES[k][1]}\n' for k in PAGES) + f"""
+""" + ''.join(f'- [{NAMES[k]}]({U(k)}): {PAGES[k][1]}\n' for k in PAGES) + '\n## Blog\n' + ''.join(f'- [{p["title"]}]({BASE}/blog/{p["slug"]}/): {p["desc"]}\n' for p in POSTS) + f"""
 ## Sitemap
 - [XML sitemap]({BASE}/sitemap.xml)
 - [HTML sitemap]({BASE}/sitemap/)
@@ -467,7 +522,7 @@ _sec = [{"key": "X-Content-Type-Options", "value": "nosniff"}, {"key": "Referrer
 _imm = [{"key": "Cache-Control", "value": "public, max-age=31536000, immutable"}]
 _vc = {"$schema": "https://openapi.vercel.sh/vercel.json", "cleanUrls": True, "trailingSlash": True,
   "rewrites": [{"source": "/api/contact/", "destination": "/api/contact"}],
-  "redirects": [{"source": f"/{k}.html", "destination": f"/{k}/", "permanent": True} for k in PAGES if k != 'index']
+  "redirects": [{"source": "/:path*", "has": [{"type": "host", "value": "www.azdriving.co.uk"}], "destination": "https://azdriving.co.uk/:path*", "permanent": True}] + [{"source": f"/{k}.html", "destination": f"/{k}/", "permanent": True} for k in PAGES if k != 'index']
     + [{"source": "/index.html", "destination": "/", "permanent": True}, {"source": "/home", "destination": "/", "permanent": True}, {"source": "/home/", "destination": "/", "permanent": True}],
   "headers": [{"source": "/(.*)", "headers": _sec},
     {"source": "/assets/(.*)", "headers": _imm}, {"source": "/style.css", "headers": _imm}, {"source": "/app.js", "headers": _imm},
@@ -477,6 +532,6 @@ _vc = {"$schema": "https://openapi.vercel.sh/vercel.json", "cleanUrls": True, "t
     {"source": "/llms.txt", "headers": [{"key": "Content-Type", "value": "text/plain; charset=utf-8"}]},
     {"source": "/site.webmanifest", "headers": [{"key": "Content-Type", "value": "application/manifest+json; charset=utf-8"}]}]}
 write('vercel.json', json.dumps(_vc, indent=2) + '\n')
-write('.vercelignore', 'build.py\ndev-server.js\n.env.local\nREADME.txt\n_headers\n_redirects\n__pycache__\n*.zip\n.DS_Store\n')
+write('.vercelignore', 'build.py\nblog_data.py\ndev-server.js\n.env.local\nREADME.txt\n_headers\n_redirects\n__pycache__\n*.zip\n.DS_Store\n')
 write('.gitignore', '__pycache__/\n.DS_Store\n.vercel\n.env.local\n')
 print('built', len(PAGES) + 2, 'pages')

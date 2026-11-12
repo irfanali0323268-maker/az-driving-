@@ -48,3 +48,24 @@ If sending ever fails, the customer sees your phone, WhatsApp and email instead 
 INTRO ANIMATION
 The animated logo plays full screen once per browser session (about 3.4 s), has a Skip button / Esc key,
 and is skipped for reduced-motion users and search-engine bots. The site then fades in.
+
+GOOGLE LOGO / FAVICON + SITELINKS (do these after deploying)
+- Icons: favicon.ico (16/32/48) + assets/icon-48/96/144/192/512.png, all the new AZ logo. Google only re-reads favicons when it re-crawls
+  the HOMEPAGE, so the old icon stays in search results for days to a few weeks. Speed it up:
+  Search Console > URL Inspection > https://azdriving.co.uk/ > Test Live URL > Request Indexing.
+  Check https://azdriving.co.uk/favicon.ico and /assets/icon-48.png open in a browser (they must not redirect or be blocked).
+- Search Console: add property (Domain), paste the verification meta tag into build.py's <head> comment, run build.py, deploy, Verify,
+  then Sitemaps > add sitemap.xml. Request indexing for each page listed above.
+- Sitelinks (the extra links under the result) are chosen automatically by Google. They appear once the site is indexed and trusted; clear nav
+  names, SiteNavigationElement schema, internal links and a complete sitemap (all done) give the best chance. They cannot be forced.
+- Biggest ranking lever for "driving school Gloucester": a verified Google Business Profile with the same name/address/phone, real reviews,
+  and consistent listings (Bing Places, Yell, Facebook).
+
+BLOG
+Posts live in blog_data.py (title, SEO title, description, image, body HTML). Add a post by copying one entry, then run python3 build.py.
+Each post gets its own page /blog/<slug>/, BlogPosting + Breadcrumb schema, sitemap entry, llms.txt entry and a card on /blog/ and the homepage.
+Update fees in the posts (theory GBP23, practical GBP62/GBP75, provisional GBP34) if GOV.UK changes them.
+
+CONTACT FORM CHECK
+Open https://azdriving.co.uk/api/contact/ in a browser. It shows whether RESEND_API_KEY is set ("configured": true/false). If the form shows
+"Sorry, we could not send..." on a site run with python http.server, that is expected: use node dev-server.js (with .env.local) or Vercel.

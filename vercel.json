@@ -10,6 +10,17 @@
   ],
   "redirects": [
     {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.azdriving.co.uk"
+        }
+      ],
+      "destination": "https://azdriving.co.uk/:path*",
+      "permanent": true
+    },
+    {
       "source": "/about-us.html",
       "destination": "/about-us/",
       "permanent": true
@@ -32,6 +43,11 @@
     {
       "source": "/pricing.html",
       "destination": "/pricing/",
+      "permanent": true
+    },
+    {
+      "source": "/blog.html",
+      "destination": "/blog/",
       "permanent": true
     },
     {
