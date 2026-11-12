@@ -1,7 +1,6 @@
 /* Local test server: serves the site AND runs api/contact.js (so the form can send email on localhost).
-   Usage:  1) create a file named .env.local containing   RESEND_API_KEY=re_xxxxxxxx
-           2) run   node dev-server.js     3) open http://localhost:3000
-   Optional in .env.local: MAIL_FROM=AZ Driving School <onboarding@resend.dev>   (for testing before your domain is verified)  */
+   Usage:  1) fill SMTP_HOST / SMTP_USER / SMTP_PASS inside api/contact.js (or put them in a .env.local file)
+           2) run   node dev-server.js     3) open http://localhost:3000  */
 const http = require('http'), fs = require('fs'), path = require('path');
 for (const name of ['.env.local', '.env.local.txt', '.env']) {
   try {
@@ -11,7 +10,6 @@ for (const name of ['.env.local', '.env.local.txt', '.env']) {
     console.log('Loaded settings from ' + name); break;
   } catch (e) { /* try next */ }
 }
-console.log(process.env.RESEND_API_KEY ? 'RESEND_API_KEY: found' : 'RESEND_API_KEY: NOT FOUND - create a file named .env.local next to dev-server.js containing RESEND_API_KEY=re_xxxx');
 const contact = require('./api/contact.js');
 const TYPES = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.json': 'application/json', '.webp': 'image/webp', '.png': 'image/png',
   '.jpg': 'image/jpeg', '.svg': 'image/svg+xml', '.ico': 'image/x-icon', '.mp4': 'video/mp4', '.txt': 'text/plain', '.xml': 'application/xml', '.webmanifest': 'application/manifest+json' };
