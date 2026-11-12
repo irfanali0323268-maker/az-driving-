@@ -29,15 +29,6 @@ function parseBody(req) {
 
 module.exports = async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
-  // Health check: open https://azdriving.co.uk/api/contact/ in a browser to see whether email sending is configured (no secrets shown).
-  if (req.method === 'GET') {
-    const ok = !!process.env.RESEND_API_KEY;
-    return res.status(200).json({
-      ok, configured: ok, to: MAIL_TO.map(a => a.replace(/^(.).*(@.*)$/, '$1***$2')), from: MAIL_FROM,
-      hint: ok ? 'RESEND_API_KEY is set. If enquiries still fail, check Vercel > Logs for lines starting with "contact:".'
-               : 'RESEND_API_KEY is NOT set. Add it in Vercel > Project > Settings > Environment Variables, then redeploy.'
-    });
-  }
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
     return res.status(405).json({ ok: false, error: 'method_not_allowed' });
@@ -81,32 +72,22 @@ module.exports = async function handler(req, res) {
       '</td><td style="border-bottom:1px solid #e3e6ee;vertical-align:top;white-space:pre-wrap">' + esc(r[1]) + '</td></tr>').join('') +
     '</table><p style="font-size:12px;color:#667;margin-top:14px">Press Reply to answer ' + esc(name) + ' directly.</p></div>';
 
-  const send = from => fetch('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: { Authorization: 'Bearer ' + process.env.RESEND_API_KEY, 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      from,
-      to: MAIL_TO,
-      reply_to: email,
-      subject: 'New enquiry: ' + name + (course ? ' - ' + course : ''),
-      text,
-      html
-    })
-  });
-
   try {
-    let r = await send(MAIL_FROM);
-    let body = await r.text();
-    // Domain not verified yet in Resend (403/422)? Retry once with Resend's shared test sender so the enquiry is not lost.
-    if (!r.ok && (r.status === 403 || r.status === 422) && /domain|verif|from/i.test(body) && !/onboarding@resend\.dev/.test(MAIL_FROM)) {
-      console.error('contact: sender domain not verified, retrying with onboarding@resend.dev. Resend said:', body.slice(0, 300));
-      r = await send('AZ Driving School Website <onboarding@resend.dev>');
-      body = await r.text();
-    }
+    const r = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: { Authorization: 'Bearer ' + process.env.RESEND_API_KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        from: MAIL_FROM,
+        to: MAIL_TO,
+        reply_to: email,
+        subject: 'New enquiry: ' + name + (course ? ' - ' + course : ''),
+        text,
+        html
+      })
+    });
     if (!r.ok) {
-      console.error('contact: Resend error', r.status, body.slice(0, 500));
-      const error = r.status === 401 || r.status === 403 ? 'mail_auth' : 'send_failed';
-      return res.status(502).json({ ok: false, error });
+      console.error('contact: Resend error', r.status, (await r.text()).slice(0, 500));
+      return res.status(502).json({ ok: false, error: 'send_failed' });
     }
     return res.status(200).json({ ok: true });
   } catch (e) {

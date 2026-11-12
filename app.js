@@ -63,19 +63,13 @@ f.onsubmit=async e=>{e.preventDefault();let bad=0;const S=(id,m)=>{const el=$('#
 S('n',v('n').length<2?'Please enter your name.':'');S('p',!/^[+\d][\d\s()-]{7,}$/.test(v('p'))?'Enter a valid phone number.':'');S('e',!/^\S+@\S+\.\S+$/.test(v('e'))?'Enter a valid email.':'');S('e2',v('e2')!==v('e')?'Emails do not match.':'');
 const st=$('#st'),btn=$('button[type=submit]',f);st.className='fine';if(bad)return st.textContent='Please fix the highlighted fields.';
 const label=btn.textContent;btn.disabled=true;btn.textContent='Sending…';st.textContent='Sending your enquiry…';
-try{const body=JSON.stringify({name:v('n'),phone:v('p'),email:v('e'),course:$('#c').value,location:$('#l').value,method:$('#m').value,message:v('g'),website:v('web')});
-const post=async u=>{const r=await fetch(u,{method:'POST',headers:{'Content-Type':'application/json'},body});const j=await r.json().catch(()=>null);return{r,j}};
-let q=await post('/api/contact/');if(!q.j)q=await post('/api/contact');
-if(!q.j)throw new Error('no_api');
-if(q.r.status===400&&q.j.fields){const F={name:'n',phone:'p',email:'e'};Object.keys(q.j.fields).forEach(k=>S(F[k],'Please check this field.'));btn.disabled=false;btn.textContent=label;st.textContent='Please fix the highlighted fields.';return}
-if(!q.r.ok||!q.j.ok)throw new Error(q.j.error||'send_failed');
+try{const r=await fetch('/api/contact/',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:v('n'),phone:v('p'),email:v('e'),course:$('#c').value,location:$('#l').value,method:$('#m').value,message:v('g'),website:v('web')})});
+const j=await r.json().catch(()=>({}));if(!r.ok||!j.ok)throw new Error(j.error||'send_failed');
 const nm=v('n').split(' ')[0],how=$('#m').value;
 f.innerHTML='<div class="ok" role="status"><span class="okc" aria-hidden="true">✓</span><h2>Thank you, <span class="nm"></span>!</h2><p>Your enquiry has been sent to AZ Driving School. We will get back to you by <b class="hw"></b> as soon as we can.</p><button class="btn" type="button">Send another enquiry</button></div>';
 $('.nm',f).textContent=nm;$('.hw',f).textContent=how.toLowerCase();$('.ok .btn',f).onclick=()=>location.reload();f.scrollIntoView({behavior:RM?'auto':'smooth',block:'center'})}
 catch(err){btn.disabled=false;btn.textContent=label;st.className='fine bad';
-const sub=encodeURIComponent('Enquiry from '+v('n')+' - '+$('#c').value),bod=encodeURIComponent('Name: '+v('n')+'\nPhone: '+v('p')+'\nEmail: '+v('e')+'\nCourse: '+$('#c').value+'\nLocation: '+$('#l').value+'\nPreferred contact: '+$('#m').value+'\n\n'+v('g'));
-st.innerHTML='Sorry, we could not send your enquiry just now. Please call <a href="tel:+447380323268">+44 7380 323268</a>, message us on <a href="https://wa.me/447380323268" target="_blank" rel="noopener">WhatsApp</a> or <a href="mailto:info@azdriving.co.uk?subject='+sub+'&body='+bod+'">email us your details</a>.';
-if(window.console)console.warn('Enquiry form error:',err&&err.message)}}}
+st.innerHTML='Sorry, we could not send your enquiry just now. Please call <a href="tel:+447380323268">+44 7380 323268</a>, message us on <a href="https://wa.me/447380323268" target="_blank" rel="noopener">WhatsApp</a> or email <a href="mailto:info@azdriving.co.uk">info@azdriving.co.uk</a>.'}}}
 /* 3D gallery */
 const cf=$('#cf');if(cf){const cs=$$('.cc',cf),S=cs.length;let a=0,lk=0;cf.classList.add('on');
 function lay(){const cw=Math.min(330,cf.clientWidth*.7);cf.style.height=cw*1.33+70+'px';cs.forEach((c,i)=>{let r=i-a;if(r>S/2)r-=S;if(r<-S/2)r+=S;const x=Math.abs(r);c.style.width=cw+'px';c.style.height=cw*1.33+'px';c.style.zIndex=9-x;c.style.opacity=x>2?0:1;c.style.pointerEvents=x>2?'none':'auto';c.classList.toggle('ac',!r);c.setAttribute('aria-hidden',x>0?'true':'false');c.style.transform=`translate(-50%,-50%) translateX(${r*cw*.6}px) translateZ(${-x*220}px) rotateY(${-r*14}deg) scale(${1-x*.1})`})}
