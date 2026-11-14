@@ -48,3 +48,10 @@ and is skipped for reduced-motion users and search-engine bots. The site then fa
 CONTACT FORM EMAIL (built in, no third-party service)
 Open api/contact.js and fill in SMTP_HOST, SMTP_USER and SMTP_PASS (your own info@azdriving.co.uk mailbox login),
 then deploy to Vercel. Check https://azdriving.co.uk/api/contact/ shows "configured":true. Keep the GitHub repo PRIVATE.
+
+UPDATE 14 Nov 2026 (video + sitelinks)
+New pages: /videos/ (promo video, VideoObject schema, transcript, video sitemap entry), /best-driving-school-gloucester/, /privacy-policy/.
+Blog restored: build.py + style.css had lost the blog code in an older upload; blog is back in nav, sitemap, home page and llms.txt.
+Video files: assets/video/ (4 MB, compressed from 15 MB). To replace, overwrite the mp4 + poster with the same names, run python3 build.py.
+SITELINKS: Google chooses them itself. After deploy, in Search Console request indexing for /, /videos/, /blog/, /pricing/, /driving-courses/,
+/about-us/, /contact/ and resubmit sitemap.xml. Sitelinks usually appear within a few weeks once the site is crawled and the brand name is searched.
