@@ -646,3 +646,5 @@ img,video{-webkit-user-drag:none}
 .aurora i:nth-child(3){bottom:calc(-34vmax + 18vh)}
 }
 
+.vfail{margin:12px 6px 4px;padding:12px 14px;border-radius:14px;background:rgba(233,185,58,.18);color:#0b1f4d;font-size:.9rem;text-align:center}.vfail a{color:#1f4fb5;font-weight:600;text-decoration:underline}
+
