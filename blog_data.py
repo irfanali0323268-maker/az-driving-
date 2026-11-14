@@ -35,7 +35,7 @@ POSTS = [
  dict(
   slug='manual-or-automatic-driving-lessons',
   title='Manual or Automatic Driving Lessons: Which Should You Choose?',
-  seo='Manual or Automatic Driving Lessons? Which to Choose | AZ Driving School',
+  seo='Manual or Automatic Driving Lessons? Which to Choose | AZ Driving',
   desc='Manual or automatic driving lessons? Compare the licence you earn, learning curve, cost and who each suits, then choose with confidence in Gloucester.',
   img='/assets/courses/course-2.webp', tag='Choosing lessons', mins=5,
   excerpt='A plain comparison of manual and automatic lessons, and the licence rules that matter.',
@@ -68,7 +68,7 @@ POSTS = [
  dict(
   slug='driving-test-day-what-to-expect',
   title='Practical Driving Test: What to Expect on the Day',
-  seo='Practical Driving Test: What to Expect on the Day | AZ Driving School',
+  seo='Practical Driving Test: What to Expect on the Day | AZ Driving',
   desc='What happens in the UK practical driving test: eyesight check, show me tell me, independent driving, manoeuvres, faults and what to bring on test day.',
   img='/assets/courses/course-5.webp', tag='Test day', mins=6,
   excerpt='From the eyesight check to the result, a clear walk-through of the car driving test.',
@@ -173,7 +173,7 @@ POSTS = [
  dict(
   slug='nervous-learner-driver-tips',
   title='Nervous About Driving? 7 Ways to Feel Calmer Behind the Wheel',
-  seo='Nervous Learner Driver? 7 Tips to Feel Calmer | AZ Driving School',
+  seo='Nervous Learner Driver? 7 Tips to Feel Calmer | AZ Driving',
   desc='Feeling anxious about driving lessons or your test? Seven practical, supportive tips for nervous learner drivers, from pacing to breathing.',
   img='/assets/courses/course-1.webp', tag='Confidence', mins=4,
   excerpt='Feeling nervous is normal. These seven steps help you build confidence at your own pace.',
@@ -198,7 +198,7 @@ POSTS = [
  dict(
   slug='provisional-licence-guide',
   title='How to Get Your Provisional Driving Licence',
-  seo='How to Get a Provisional Driving Licence (UK) | AZ Driving School',
+  seo='How to Get a Provisional Driving Licence (UK) | AZ Driving',
   desc='Step by step guide to applying for your first UK provisional driving licence: age rules, what you need, the fee and what to do next.',
   img='/assets/courses/course-3.webp', tag='Getting started', mins=4,
   excerpt='Age rules, what you need and how to apply, so you can book your first lesson.',
