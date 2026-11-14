@@ -472,6 +472,7 @@ def ld(k, t, d):
     return json.dumps({"@context": "https://schema.org", "@graph": g}, ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/')
 
 # ----------------------------------------------------------------- LAYOUT
+<<<<<<< HEAD
 def _css_min(c):
     c = re.sub(r'/\*.*?\*/', '', c, flags=re.S)
     return re.sub(r'\s*\n\s*', '', c).strip()
@@ -479,6 +480,8 @@ def _css_min(c):
 CSS_INLINE = _css_min(open('style.css', encoding='utf-8').read())
 JS_INLINE = open('app.js', encoding='utf-8').read().replace('{', '{{').replace('}', '}}') if False else open('app.js', encoding='utf-8').read()
 
+=======
+>>>>>>> 1cf0e154019e93a511ebada367d4e69b5b5a29aa
 def page(k, t, d, body, robots='index,follow,max-image-preview:large,max-snippet:-1', canon=True, schema='', img='/assets/og-image.jpg', otype='website'):
     t, d = esc(t), esc(d)
     nv = ''.join(f'<a href="{L(u)}"{" class=on aria-current=page" if u == k else ""}>{n}</a>' for u, n in [('index', 'Home')] + NAV)
@@ -503,7 +506,11 @@ def page(k, t, d, body, robots='index,follow,max-image-preview:large,max-snippet
       '<button class="wf" id="wf" type="button" aria-expanded="false" aria-controls="wp" aria-label="Chat with us on WhatsApp">' + WA_ICON + '<span class="wt">Chat with us</span></button></div>')
     return f'''<!DOCTYPE html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><script>document.documentElement.className="js";try{{if(!sessionStorage.getItem("azi")&&!matchMedia("(prefers-reduced-motion:reduce)").matches&&!/bot|crawl|spider|lighthouse/i.test(navigator.userAgent))document.documentElement.className+=" intro"}}catch(e){{}}</script>
 <title>{t}</title><meta name="description" content="{d}"><meta name="robots" content="{robots}">{cn}<meta name="theme-color" content="#0b1f4d"><meta name="author" content="AZ Driving School"><meta name="geo.region" content="GB-GLS"><meta name="geo.placename" content="Gloucester"><link rel="manifest" href="/site.webmanifest"><link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml"><meta name="format-detection" content="telephone=no"><meta name="googlebot" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1"><meta name="bingbot" content="index,follow,max-snippet:-1,max-image-preview:large"><meta name="color-scheme" content="light"><meta name="application-name" content="AZ Driving School"><meta name="apple-mobile-web-app-title" content="AZ Driving"><meta name="msapplication-TileColor" content="#0b1f4d"><link rel="alternate" type="text/plain" title="LLMs" href="/llms.txt">{og}
+<<<<<<< HEAD
 <link rel="icon" type="image/png" sizes="48x48" href="/assets/icon-48.png?v={V}"><link rel="icon" href="/favicon.ico?v={V}" sizes="any"><link rel="shortcut icon" href="/favicon.ico?v={V}"><link rel="icon" type="image/png" sizes="32x32" href="/assets/icon-32.png?v={V}"><link rel="icon" type="image/png" sizes="96x96" href="/assets/icon-96.png?v={V}"><link rel="icon" type="image/png" sizes="192x192" href="/assets/icon-192.png?v={V}"><link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png?v={V}">{pre}<style>{CSS_INLINE}</style>
+=======
+<link rel="icon" type="image/png" sizes="48x48" href="/assets/icon-48.png?v={V}"><link rel="icon" href="/favicon.ico?v={V}" sizes="any"><link rel="shortcut icon" href="/favicon.ico?v={V}"><link rel="icon" type="image/png" sizes="32x32" href="/assets/icon-32.png?v={V}"><link rel="icon" type="image/png" sizes="96x96" href="/assets/icon-96.png?v={V}"><link rel="icon" type="image/png" sizes="192x192" href="/assets/icon-192.png?v={V}"><link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png?v={V}">{pre}<link rel="stylesheet" href="/style.css?v={V}">
+>>>>>>> 1cf0e154019e93a511ebada367d4e69b5b5a29aa
 <!-- Google Search Console: add google-site-verification meta tag here --><!-- Bing Webmaster: add msvalidate.01 meta tag here --><!-- Google Analytics 4: add your gtag snippet (G-XXXXXXXXXX) here -->{sc}</head>
 <body><div id="intro"><div class="ib" aria-hidden="true"><video id="iv" muted playsinline preload="auto" poster="/assets/logo-poster.webp" width="720" height="428"></video><i class="ibar"></i></div><button class="is" type="button">Skip</button></div><script>if(document.documentElement.classList.contains("intro")){{var iv=document.getElementById("iv");iv.muted=true;iv.src="/assets/logo-animated.mp4";var ip=iv.play();if(ip&&ip.catch)ip.catch(function(){{}})}}</script><svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><filter id="lg" x="-5%" y="-5%" width="110%" height="110%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency=".012 .02" numOctaves="2" seed="7" result="n"/><feGaussianBlur in="n" stdDeviation="1.2" result="nb"/><feDisplacementMap in="SourceGraphic" in2="nb" scale="14" xChannelSelector="R" yChannelSelector="G"/></filter></svg><a class="skip" href="#main">Skip to content</a><div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div><canvas id="sp" aria-hidden="true"></canvas><div id="pb" aria-hidden="true"></div>
 <header class="top"><nav id="nav" aria-label="Main"><a class="lg" href="/" aria-label="AZ Driving School home"><img src="/assets/logo.webp" alt="AZ Driving School" width="67" height="34"></a><div class="ln" id="ln">{nv}</div><a class="btn p nb" href="/contact/">Book Your Lesson</a><button class="bg" id="bg" aria-label="Menu" aria-expanded="false" aria-controls="ln"><span></span><span></span></button></nav></header>
@@ -621,7 +628,7 @@ _sec = [{"key": "X-Content-Type-Options", "value": "nosniff"}, {"key": "Referrer
 _imm = [{"key": "Cache-Control", "value": "public, max-age=31536000, immutable"}]
 _vc = {"$schema": "https://openapi.vercel.sh/vercel.json", "cleanUrls": True, "trailingSlash": True,
   "rewrites": [{"source": "/api/contact/", "destination": "/api/contact"}],
-  "redirects": [{"source": f"/{k}.html", "destination": f"/{k}/", "permanent": True} for k in PAGES if k != 'index']
+  "redirects": [{"source": "/:path*", "has": [{"type": "host", "value": "www.azdriving.co.uk"}], "destination": "https://azdriving.co.uk/:path*", "permanent": True}] + [{"source": f"/{k}.html", "destination": f"/{k}/", "permanent": True} for k in PAGES if k != 'index']
     + [{"source": "/index.html", "destination": "/", "permanent": True}, {"source": "/home", "destination": "/", "permanent": True}, {"source": "/home/", "destination": "/", "permanent": True}],
   "headers": [{"source": "/(.*)", "headers": _sec},
     {"source": "/assets/(.*)", "headers": _imm}, {"source": "/style.css", "headers": _imm}, {"source": "/app.js", "headers": _imm},
