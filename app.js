@@ -1,4 +1,14 @@
 const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)],RM=matchMedia('(prefers-reduced-motion:reduce)').matches;
+/* muted-autoplay helper: starts a video and retries until the browser allows it (low-power mode, data saver, tab in background, first tap) */
+function kick(v){if(!v)return;v.muted=true;v.defaultMuted=true;v.playsInline=true;const p=v.play();if(p&&p.catch)p.catch(()=>{})}
+function keepPlaying(v){if(!v||RM)return;
+ const tryPlay=()=>{if(v.paused&&!document.hidden&&!document.documentElement.classList.contains('intro'))kick(v)};
+ ['canplay','loadeddata','suspend','stalled','pause'].forEach(e=>v.addEventListener(e,()=>setTimeout(tryPlay,60)));
+ v.addEventListener('ended',()=>{v.currentTime=0;kick(v)});
+ document.addEventListener('visibilitychange',tryPlay);addEventListener('pageshow',tryPlay);
+ ['pointerdown','touchstart','keydown','scroll','click'].forEach(e=>addEventListener(e,tryPlay,{passive:true,once:true}));
+ if('IntersectionObserver' in window)new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting)tryPlay()}),{threshold:.1}).observe(v);
+ let n=0;const iv=setInterval(()=>{if(++n>60||(!v.paused&&v.currentTime>0))return clearInterval(iv);tryPlay()},700)}
 /* intro: animated logo splash, once per visit; the site reveals itself when it ends */
 (()=>{const el=$('#intro'),root=document.documentElement;if(!el)return;
 if(!root.classList.contains('intro')){el.remove();return}
@@ -7,12 +17,13 @@ try{sessionStorage.setItem('azi','1')}catch(e){}
 if(hv)hv.pause();
 const end=()=>{if(done)return;done=1;clearTimeout(t1);clearTimeout(t2);removeEventListener('keydown',key);
  el.classList.add('out');root.classList.remove('intro');
- if(hv){hv.currentTime=0;const p=hv.play();if(p&&p.catch)p.catch(()=>{})}
+ if(hv){try{hv.currentTime=0}catch(e){}kick(hv)}
  $$('.rv:not(.in)').forEach(n=>{io.unobserve(n);io.observe(n)});
  setTimeout(()=>el.remove(),900)},
 key=e=>{if(e.key==='Escape')end()},
 go=()=>{if(started||done)return;started=1;clearTimeout(t2);el.style.setProperty('--it',SHOW+'ms');el.classList.add('go');t1=setTimeout(end,SHOW)};
-v.addEventListener('playing',go,{once:true});v.addEventListener('error',()=>{started=0;go()},{once:true});
+if(!v.paused&&v.readyState>=3)go();else{v.addEventListener('playing',go,{once:true});v.addEventListener('canplay',()=>{if(v.paused)kick(v)},{once:true})}
+v.addEventListener('error',()=>{started=0;go()},{once:true});
 t2=setTimeout(go,1500);setTimeout(end,HARD);
 $('.is',el).addEventListener('click',end);el.addEventListener('click',end);addEventListener('keydown',key)})();
 /* ambient particles */
@@ -82,7 +93,7 @@ cs.forEach((c,i)=>c.onclick=()=>go(i));$('#cp').onclick=()=>go(a-1);$('#cn').onc
 cf.tabIndex=0;cf.onkeydown=e=>{if(e.key==='ArrowRight')go(a+1);if(e.key==='ArrowLeft')go(a-1)};
 let sx=0;cf.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});cf.addEventListener('touchend',e=>{const d=e.changedTouches[0].clientX-sx;if(Math.abs(d)>40)go(a+(d<0?1:-1))});
 addEventListener('resize',lay);lay();if(!RM){setInterval(()=>{if(!document.hidden&&!cf.matches(':hover,:focus-within'))go(a+1)},5000)}}
-const lv=$('#lv');if(lv&&RM){lv.pause();lv.removeAttribute('autoplay')}
+const lv=$('#lv');if(lv){if(RM){lv.pause();lv.removeAttribute('autoplay')}else keepPlaying(lv)}
 /* ===== Lightning cursor (port of Originkit Lightning Cursor) ===== */
 (()=>{
 if(RM||!matchMedia('(hover:hover) and (pointer:fine)').matches)return;

@@ -581,3 +581,7 @@ form .btn[disabled]{opacity:.7;cursor:progress;transform:none}
 .ok .okc{display:grid;place-items:center;width:68px;height:68px;margin:0 auto 18px;border-radius:50%;font-size:2rem;font-weight:700;color:var(--navy);background:linear-gradient(180deg,#f6d36b,#c8960c);box-shadow:0 14px 34px -10px rgba(200,150,12,.7)}
 .ok h2{font-size:1.7rem}.ok p{max-width:420px;margin-left:auto;margin-right:auto}
 @keyframes okin{from{opacity:0;transform:translateY(14px) scale(.98)}to{opacity:1;transform:none}}
+
+/* Safari / iOS: blend modes on <video> can freeze or render blank, so use a plain white card there (same as phones) */
+html.nb .vd{background:#fff;border:0;border-radius:26px;overflow:hidden;box-shadow:0 20px 40px -22px rgba(11,31,77,.35)}
+html.nb .vd video,html.nb #intro video{mix-blend-mode:normal}

@@ -48,3 +48,8 @@ and is skipped for reduced-motion users and search-engine bots. The site then fa
 CONTACT FORM EMAIL (built in, no third-party service)
 Open api/contact.js and fill in SMTP_HOST, SMTP_USER and SMTP_PASS (your own info@azdriving.co.uk mailbox login),
 then deploy to Vercel. Check https://azdriving.co.uk/api/contact/ shows "configured":true. Keep the GitHub repo PRIVATE.
+
+CACHING / ASSETS (important)
+/assets/* is cached for a year (immutable), so build.py now adds ?v=<content hash> to every /assets/... URL in every page, and an automatic
+hash to style.css/app.js. Replace any image/video in /assets, run  python3 build.py,  commit and push - visitors get the new file at once.
+The logo video is shipped as MP4 + WebM; the browser picks whichever it can play. Always run build.py before deploying.
