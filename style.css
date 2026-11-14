@@ -614,3 +614,35 @@ article.post .hero-img{margin-left:0}
 .vp{padding:10px;width:100%;max-width:520px;margin-left:auto;margin-right:auto;overflow:hidden}
 .vp video{display:block;width:100%;height:auto;aspect-ratio:720/724;border-radius:22px;background:#0b1f4d;object-fit:cover}
 @media(max-width:860px){.vp{max-width:440px}}
+
+/* ---- Smoothness layer: same look and animations, cheaper to paint ---- */
+.gl,.btn:not(.p),.seg,.wp,.pw,.fc .ci,footer .fb2{-webkit-backdrop-filter:none;backdrop-filter:none}
+/* ---- Premium finish: typography and touch polish (no animation changes) ---- */
+h1,h2,h3{text-wrap:balance}p,li{text-wrap:pretty}
+html{scroll-padding-top:96px;text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+a,button{-webkit-tap-highlight-color:transparent}
+img,video{-webkit-user-drag:none}
+
+/* ---- Play button ---- */
+.pbtn{position:absolute;left:50%;top:50%;width:84px;height:84px;margin:-42px 0 0 -42px;border:0;border-radius:50%;cursor:pointer;display:grid;place-items:center;color:#0b1f4d;background:linear-gradient(145deg,#f6d36b,#e9b93a 55%,#c8960c);box-shadow:0 0 0 8px rgba(255,255,255,.35),0 18px 40px -8px rgba(11,31,77,.55);transition:transform .25s ease,opacity .25s ease,box-shadow .25s ease;z-index:3}
+.pbtn svg{width:36px;height:36px;fill:currentColor;margin-left:5px}
+.pbtn:hover{transform:scale(1.08);box-shadow:0 0 0 12px rgba(255,255,255,.4),0 22px 46px -8px rgba(11,31,77,.6)}
+.pbtn.off{opacity:0;pointer-events:none;transform:scale(.8)}
+@media(max-width:600px){.pbtn{width:68px;height:68px;margin:-34px 0 0 -34px}.pbtn svg{width:30px;height:30px}}
+
+/* ---- Premium stats strip ---- */
+.gl.stats{padding:38px 18px;background:linear-gradient(90deg,transparent,#e9b93a 50%,transparent) 50% 0/44% 2px no-repeat,linear-gradient(150deg,rgba(255,255,255,.94),rgba(255,255,255,.66));box-shadow:0 0 0 1px rgba(233,185,58,.28),inset 0 1px 0 #fff,inset 0 -1px 0 rgba(233,185,58,.18),0 34px 64px -28px rgba(11,31,77,.34),0 0 56px rgba(233,185,58,.14)}
+.stats .big{font-size:clamp(2.4rem,4.4vw,3.6rem);font-variant-numeric:lining-nums tabular-nums;letter-spacing:-.01em;filter:drop-shadow(0 6px 14px rgba(185,136,0,.22))}
+.stats .st>span:last-child{margin-top:10px;font-size:.74rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#46506b}
+.stats .st+.st:before{top:10%;bottom:10%;background:linear-gradient(transparent,rgba(185,136,0,.38),transparent)}
+.stats .big{display:flex;align-items:center;justify-content:center;min-height:1.2em}
+.stats .big .tick{display:inline-flex!important;align-items:center;justify-content:center;width:.86em;height:.86em;border-radius:50%;background:linear-gradient(145deg,#f6d36b,#e9b93a 55%,#c8960c);box-shadow:0 0 0 .1em rgba(233,185,58,.2),0 .2em .4em -.1em rgba(185,136,0,.55);-webkit-text-fill-color:initial}
+.stats .big .tick svg{display:block;width:52%;height:52%;fill:none;stroke:#0b1f4d;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+@media(max-width:700px){.gl.stats{padding:28px 10px}.stats .st>span:last-child{font-size:.68rem;letter-spacing:.12em}}
+
+/* ---- Seamless background: parallax lifts the aurora, so extend it to keep the bottom covered ---- */
+@supports(animation-timeline:scroll()){
+.aurora{inset:0 0 -18vh 0}
+.aurora i:nth-child(3){bottom:calc(-34vmax + 18vh)}
+}
+
