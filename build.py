@@ -614,7 +614,7 @@ _sec = [{"key": "X-Content-Type-Options", "value": "nosniff"}, {"key": "Referrer
 _imm = [{"key": "Cache-Control", "value": "public, max-age=31536000, immutable"}]
 _vc = {"$schema": "https://openapi.vercel.sh/vercel.json", "cleanUrls": True, "trailingSlash": True,
   "rewrites": [{"source": "/api/contact/", "destination": "/api/contact"}],
-  "redirects": [{"source": f"/{k}.html", "destination": f"/{k}/", "permanent": True} for k in PAGES if k != 'index']
+  "redirects": [{"source": "/:path*", "has": [{"type": "host", "value": "www.azdriving.co.uk"}], "destination": "https://azdriving.co.uk/:path*", "permanent": True}] + [{"source": f"/{k}.html", "destination": f"/{k}/", "permanent": True} for k in PAGES if k != 'index']
     + [{"source": "/index.html", "destination": "/", "permanent": True}, {"source": "/home", "destination": "/", "permanent": True}, {"source": "/home/", "destination": "/", "permanent": True}],
   "headers": [{"source": "/(.*)", "headers": _sec},
     {"source": "/assets/(.*)", "headers": _imm}, {"source": "/style.css", "headers": _imm}, {"source": "/app.js", "headers": _imm},
