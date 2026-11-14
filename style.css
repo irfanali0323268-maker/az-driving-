@@ -648,3 +648,5 @@ img,video{-webkit-user-drag:none}
 
 .vfail{margin:12px 6px 4px;padding:12px 14px;border-radius:14px;background:rgba(233,185,58,.18);color:#0b1f4d;font-size:.9rem;text-align:center}.vfail a{color:#1f4fb5;font-weight:600;text-decoration:underline}
 
+
+.snd{position:absolute;left:22px;top:22px;z-index:4;border:0;border-radius:999px;padding:8px 14px;font:600 .8rem/1 inherit;cursor:pointer;color:#0b1f4d;background:rgba(255,255,255,.92);box-shadow:0 6px 18px -6px rgba(11,31,77,.5);transition:opacity .25s}.snd.off{opacity:0;pointer-events:none}

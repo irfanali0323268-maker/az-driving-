@@ -243,7 +243,7 @@ def body_index():
     + latest_posts() + CTA())
 
 def promo_player(cls='gl vp rv'):
-    return (f'<div class="{cls}"><video controls preload="none" playsinline poster="{PROMO_POSTER}?v={V}" width="720" height="724" '
+    return (f'<div class="{cls}"><video controls autoplay muted loop playsinline preload="auto" poster="{PROMO_POSTER}?v={V}" width="720" height="724" '
             f'aria-label="AZ Driving School promotional video: learn to drive with confidence in Gloucester, Stroud, Tewkesbury and Cheltenham">'
             f'<source src="{PROMO}?v={V}" type="video/mp4"><source src="{PROMO_WEBM}?v={V}" type="video/webm"><p>Your browser cannot play this video. <a href="{PROMO}?v={V}">Download the AZ Driving School video</a>.</p></video></div>')
 
@@ -630,7 +630,7 @@ _vc = {"$schema": "https://openapi.vercel.sh/vercel.json", "cleanUrls": True, "t
   "redirects": [{"source": "/:path*", "has": [{"type": "host", "value": "www.azdriving.co.uk"}], "destination": "https://azdriving.co.uk/:path*", "permanent": True}] + [{"source": f"/{k}.html", "destination": f"/{k}/", "permanent": True} for k in PAGES if k != 'index']
     + [{"source": "/index.html", "destination": "/", "permanent": True}, {"source": "/home", "destination": "/", "permanent": True}, {"source": "/home/", "destination": "/", "permanent": True}],
   "headers": [{"source": "/(.*)", "headers": _sec},
-    {"source": "/assets/((?!video/).*)", "headers": _imm},
+    {"source": "/assets/(.*)", "headers": _imm},
     {"source": "/assets/video/(.*)", "headers": [{"key": "Accept-Ranges", "value": "bytes"}, {"key": "Cache-Control", "value": "public, max-age=86400, must-revalidate"}]},
     {"source": "/assets/video/(.*)\\.mp4", "headers": [{"key": "Content-Type", "value": "video/mp4"}]},
     {"source": "/assets/video/(.*)\\.webm", "headers": [{"key": "Content-Type", "value": "video/webm"}]},

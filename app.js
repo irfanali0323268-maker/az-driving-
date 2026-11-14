@@ -228,6 +228,13 @@ b.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6
 box.style.position='relative';box.appendChild(b);
 const sync=()=>b.classList.toggle('off',!v.paused&&!v.ended);
 const fail=()=>{if(box.querySelector('.vfail'))return;b.classList.add('off');const m=document.createElement('p');m.className='vfail';const s=v.querySelector('source');const u=s?s.getAttribute('src'):'';m.innerHTML='This video could not play in your browser. <a href="'+u+'" target="_blank" rel="noopener">Open the video in a new tab</a>.';box.appendChild(m)};
-b.addEventListener('click',()=>{const r=v.play();if(r&&r.catch)r.catch(e=>{if(e&&e.name!=='AbortError')fail()})});
+b.addEventListener('click',()=>{v.muted=false;const r=v.play();if(r&&r.catch)r.catch(e=>{if(e&&e.name!=='AbortError')fail()})});
 v.addEventListener('error',fail);v.querySelectorAll('source').forEach((s,i,a)=>{if(i===a.length-1)s.addEventListener('error',fail)});
+v.muted=true;v.setAttribute('muted','');
+const sn=document.createElement('button');sn.type='button';sn.className='snd off';sn.textContent='Tap for sound';box.appendChild(sn);
+const ss=()=>sn.classList.toggle('off',v.paused||!v.muted);
+sn.addEventListener('click',()=>{v.muted=false;v.play().catch(()=>{})});
+v.addEventListener('volumechange',ss);v.addEventListener('play',ss);v.addEventListener('pause',ss);
+const go=()=>{const r=v.play();if(r&&r.catch)r.catch(()=>{})};
+if('IntersectionObserver'in window){new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)go();else if(!v.paused)v.pause()}),{threshold:.35}).observe(v)}else go();
 v.addEventListener('play',sync);v.addEventListener('pause',sync);v.addEventListener('ended',sync);sync()})})();

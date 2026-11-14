@@ -122,7 +122,7 @@
       ]
     },
     {
-      "source": "/assets/((?!video/).*)",
+      "source": "/assets/(.*)",
       "headers": [
         {
           "key": "Cache-Control",
