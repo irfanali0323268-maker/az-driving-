@@ -49,7 +49,16 @@ CONTACT FORM EMAIL (built in, no third-party service)
 Open api/contact.js and fill in SMTP_HOST, SMTP_USER and SMTP_PASS (your own info@azdriving.co.uk mailbox login),
 then deploy to Vercel. Check https://azdriving.co.uk/api/contact/ shows "configured":true. Keep the GitHub repo PRIVATE.
 
+<<<<<<< HEAD
 CACHING / ASSETS (important)
 /assets/* is cached for a year (immutable), so build.py now adds ?v=<content hash> to every /assets/... URL in every page, and an automatic
 hash to style.css/app.js. Replace any image/video in /assets, run  python3 build.py,  commit and push - visitors get the new file at once.
 The logo video is shipped as MP4 + WebM; the browser picks whichever it can play. Always run build.py before deploying.
+=======
+UPDATE 14 Nov 2026 (video + sitelinks)
+New pages: /videos/ (promo video, VideoObject schema, transcript, video sitemap entry), /best-driving-school-gloucester/, /privacy-policy/.
+Blog restored: build.py + style.css had lost the blog code in an older upload; blog is back in nav, sitemap, home page and llms.txt.
+Video files: assets/video/ (4 MB, compressed from 15 MB). To replace, overwrite the mp4 + poster with the same names, run python3 build.py.
+SITELINKS: Google chooses them itself. After deploy, in Search Console request indexing for /, /videos/, /blog/, /pricing/, /driving-courses/,
+/about-us/, /contact/ and resubmit sitemap.xml. Sitelinks usually appear within a few weeks once the site is crawled and the brand name is searched.
+>>>>>>> 7db209471ab21315bd2c0c5956c28924a576f193
