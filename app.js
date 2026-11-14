@@ -229,5 +229,5 @@ box.style.position='relative';box.appendChild(b);
 const sync=()=>b.classList.toggle('off',!v.paused&&!v.ended);
 const fail=()=>{if(box.querySelector('.vfail'))return;b.classList.add('off');const m=document.createElement('p');m.className='vfail';const s=v.querySelector('source');const u=s?s.getAttribute('src'):'';m.innerHTML='This video could not play in your browser. <a href="'+u+'" target="_blank" rel="noopener">Open the video in a new tab</a>.';box.appendChild(m)};
 b.addEventListener('click',()=>{const r=v.play();if(r&&r.catch)r.catch(e=>{if(e&&e.name!=='AbortError')fail()})});
-v.addEventListener('error',fail,true);v.querySelectorAll('source').forEach((s,i,a)=>{if(i===a.length-1)s.addEventListener('error',fail)});
+v.addEventListener('error',fail);v.querySelectorAll('source').forEach((s,i,a)=>{if(i===a.length-1)s.addEventListener('error',fail)});
 v.addEventListener('play',sync);v.addEventListener('pause',sync);v.addEventListener('ended',sync);sync()})})();

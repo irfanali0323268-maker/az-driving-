@@ -17,7 +17,7 @@ WA_ICON = '<svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor" a
 FOOT_Q = [('How much are lessons?', 'Hi AZ Driving School, how much are your driving lessons?'), ('Manual or automatic?', 'Hi, do you offer both manual and automatic lessons?'),
           ('Which areas do you cover?', 'Hi, which areas do you cover for driving lessons?'), ('Do you teach beginners?', 'Hi, do you teach complete beginners?'), ('How do I book?', 'Hi, how do I book my first lesson?')]
 MAPS = 'https://www.google.com/maps/search/?api=1&query=Diamond+Jubilee+Close+Gloucester+GL1+4LR'
-V = '45'  # cache-bust for css/js
+V = '46'  # cache-bust for css/js
 
 esc = html.escape
 def slug(s): return re.sub(r'[^a-z0-9]+', '-', s.lower()).strip('-')
@@ -630,7 +630,11 @@ _vc = {"$schema": "https://openapi.vercel.sh/vercel.json", "cleanUrls": True, "t
   "redirects": [{"source": "/:path*", "has": [{"type": "host", "value": "www.azdriving.co.uk"}], "destination": "https://azdriving.co.uk/:path*", "permanent": True}] + [{"source": f"/{k}.html", "destination": f"/{k}/", "permanent": True} for k in PAGES if k != 'index']
     + [{"source": "/index.html", "destination": "/", "permanent": True}, {"source": "/home", "destination": "/", "permanent": True}, {"source": "/home/", "destination": "/", "permanent": True}],
   "headers": [{"source": "/(.*)", "headers": _sec},
-    {"source": "/assets/(.*)", "headers": _imm}, {"source": "/style.css", "headers": _imm}, {"source": "/app.js", "headers": _imm},
+    {"source": "/assets/((?!video/).*)", "headers": _imm},
+    {"source": "/assets/video/(.*)", "headers": [{"key": "Accept-Ranges", "value": "bytes"}, {"key": "Cache-Control", "value": "public, max-age=86400, must-revalidate"}]},
+    {"source": "/assets/video/(.*)\\.mp4", "headers": [{"key": "Content-Type", "value": "video/mp4"}]},
+    {"source": "/assets/video/(.*)\\.webm", "headers": [{"key": "Content-Type", "value": "video/webm"}]},
+    {"source": "/style.css", "headers": _imm}, {"source": "/app.js", "headers": _imm},
     {"source": "/sitemap.xml", "headers": [{"key": "Content-Type", "value": "application/xml; charset=utf-8"}, {"key": "Cache-Control", "value": "public, max-age=3600"}]},
     {"source": "/sitemap.xsl", "headers": [{"key": "Content-Type", "value": "application/xslt+xml; charset=utf-8"}]},
     {"source": "/favicon.ico", "headers": [{"key": "Cache-Control", "value": "public, max-age=86400"}]}, {"source": "/robots.txt", "headers": [{"key": "Cache-Control", "value": "public, max-age=3600"}]},
@@ -638,5 +642,6 @@ _vc = {"$schema": "https://openapi.vercel.sh/vercel.json", "cleanUrls": True, "t
     {"source": "/site.webmanifest", "headers": [{"key": "Content-Type", "value": "application/manifest+json; charset=utf-8"}]}]}
 write('vercel.json', json.dumps(_vc, indent=2) + '\n')
 write('.vercelignore', 'build.py\nblog_data.py\ndev-server.js\n.env.local\nREADME.txt\n_headers\n_redirects\n__pycache__\n*.zip\n.DS_Store\n')
+write('.gitattributes', '*.mp4 binary\n*.webm binary\n*.webp binary\n*.png binary\n*.jpg binary\n*.ico binary\n')
 write('.gitignore', '__pycache__/\n.DS_Store\n.vercel\n.env.local\n')
 print('built', len(PAGES) + 2, 'pages')
