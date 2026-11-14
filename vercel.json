@@ -35,6 +35,26 @@
       "permanent": true
     },
     {
+      "source": "/videos.html",
+      "destination": "/videos/",
+      "permanent": true
+    },
+    {
+      "source": "/best-driving-school-gloucester.html",
+      "destination": "/best-driving-school-gloucester/",
+      "permanent": true
+    },
+    {
+      "source": "/privacy-policy.html",
+      "destination": "/privacy-policy/",
+      "permanent": true
+    },
+    {
+      "source": "/blog.html",
+      "destination": "/blog/",
+      "permanent": true
+    },
+    {
       "source": "/faqs.html",
       "destination": "/faqs/",
       "permanent": true
