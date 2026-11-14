@@ -144,24 +144,6 @@
       ]
     },
     {
-      "source": "/assets/video/(.*)\\.mp4",
-      "headers": [
-        {
-          "key": "Content-Type",
-          "value": "video/mp4"
-        }
-      ]
-    },
-    {
-      "source": "/assets/video/(.*)\\.webm",
-      "headers": [
-        {
-          "key": "Content-Type",
-          "value": "video/webm"
-        }
-      ]
-    },
-    {
       "source": "/style.css",
       "headers": [
         {

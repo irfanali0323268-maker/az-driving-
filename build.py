@@ -17,12 +17,8 @@ WA_ICON = '<svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor" a
 FOOT_Q = [('How much are lessons?', 'Hi AZ Driving School, how much are your driving lessons?'), ('Manual or automatic?', 'Hi, do you offer both manual and automatic lessons?'),
           ('Which areas do you cover?', 'Hi, which areas do you cover for driving lessons?'), ('Do you teach beginners?', 'Hi, do you teach complete beginners?'), ('How do I book?', 'Hi, how do I book my first lesson?')]
 MAPS = 'https://www.google.com/maps/search/?api=1&query=Diamond+Jubilee+Close+Gloucester+GL1+4LR'
-<<<<<<< HEAD
 import hashlib as _hl
 V = _hl.md5(open('style.css','rb').read() + open('app.js','rb').read()).hexdigest()[:8]  # auto cache-bust: changes whenever style.css/app.js change
-=======
-V = '46'  # cache-bust for css/js
->>>>>>> 7db209471ab21315bd2c0c5956c28924a576f193
 
 esc = html.escape
 def slug(s): return re.sub(r'[^a-z0-9]+', '-', s.lower()).strip('-')
@@ -648,12 +644,7 @@ _vc = {"$schema": "https://openapi.vercel.sh/vercel.json", "cleanUrls": True, "t
     + [{"source": "/index.html", "destination": "/", "permanent": True}, {"source": "/home", "destination": "/", "permanent": True}, {"source": "/home/", "destination": "/", "permanent": True}],
   "headers": [{"source": "/(.*)", "headers": _sec},
     {"source": "/assets/(.*)", "headers": _imm},
-<<<<<<< HEAD
-=======
     {"source": "/assets/video/(.*)", "headers": [{"key": "Accept-Ranges", "value": "bytes"}, {"key": "Cache-Control", "value": "public, max-age=86400, must-revalidate"}]},
-    {"source": "/assets/video/(.*)\\.mp4", "headers": [{"key": "Content-Type", "value": "video/mp4"}]},
-    {"source": "/assets/video/(.*)\\.webm", "headers": [{"key": "Content-Type", "value": "video/webm"}]},
->>>>>>> 7db209471ab21315bd2c0c5956c28924a576f193
     {"source": "/style.css", "headers": _imm}, {"source": "/app.js", "headers": _imm},
     {"source": "/sitemap.xml", "headers": [{"key": "Content-Type", "value": "application/xml; charset=utf-8"}, {"key": "Cache-Control", "value": "public, max-age=3600"}]},
     {"source": "/sitemap.xsl", "headers": [{"key": "Content-Type", "value": "application/xslt+xml; charset=utf-8"}]},

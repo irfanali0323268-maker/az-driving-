@@ -582,11 +582,10 @@ form .btn[disabled]{opacity:.7;cursor:progress;transform:none}
 .ok h2{font-size:1.7rem}.ok p{max-width:420px;margin-left:auto;margin-right:auto}
 @keyframes okin{from{opacity:0;transform:translateY(14px) scale(.98)}to{opacity:1;transform:none}}
 
-<<<<<<< HEAD
 /* Safari / iOS: blend modes on <video> can freeze or render blank, so use a plain white card there (same as phones) */
 html.nb .vd{background:#fff;border:0;border-radius:26px;overflow:hidden;box-shadow:0 20px 40px -22px rgba(11,31,77,.35)}
 html.nb .vd video,html.nb #intro video{mix-blend-mode:normal}
-=======
+
 /* ===== Blog ===== */
 .blog{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
 a.bc{display:flex;flex-direction:column;padding:0;text-decoration:none;color:inherit;overflow:hidden}
@@ -655,4 +654,3 @@ img,video{-webkit-user-drag:none}
 
 
 .snd{position:absolute;left:22px;top:22px;z-index:4;border:0;border-radius:999px;padding:8px 14px;font:600 .8rem/1 inherit;cursor:pointer;color:#0b1f4d;background:rgba(255,255,255,.92);box-shadow:0 6px 18px -6px rgba(11,31,77,.5);transition:opacity .25s}.snd.off{opacity:0;pointer-events:none}
->>>>>>> 7db209471ab21315bd2c0c5956c28924a576f193
