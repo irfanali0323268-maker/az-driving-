@@ -18,7 +18,8 @@ FOOT_Q = [('How much are lessons?', 'Hi AZ Driving School, how much are your dri
           ('Which areas do you cover?', 'Hi, which areas do you cover for driving lessons?'), ('Do you teach beginners?', 'Hi, do you teach complete beginners?'), ('How do I book?', 'Hi, how do I book my first lesson?')]
 MAPS = 'https://www.google.com/maps/search/?api=1&query=Diamond+Jubilee+Close+Gloucester+GL1+4LR'
 import hashlib as _hl
-V = _hl.md5(open('style.css','rb').read() + open('app.js','rb').read()).hexdigest()[:8]  # auto cache-bust: changes whenever style.css/app.js change
+SALT = b'r2'  # bump this to force new asset URLs everywhere (e.g. after a bad deploy cached 404s)
+V = _hl.md5(open('style.css','rb').read() + open('app.js','rb').read() + SALT).hexdigest()[:8]  # auto cache-bust: changes whenever style.css/app.js change
 
 esc = html.escape
 def slug(s): return re.sub(r'[^a-z0-9]+', '-', s.lower()).strip('-')
@@ -525,7 +526,7 @@ _ASSET_VER = {}
 def _av(m):
     p = m.group(1)
     if p not in _ASSET_VER:
-        _ASSET_VER[p] = _hl.md5(open('.' + p, 'rb').read()).hexdigest()[:8] if os.path.exists('.' + p) else ''
+        _ASSET_VER[p] = _hl.md5(open('.' + p, 'rb').read() + SALT).hexdigest()[:8] if os.path.exists('.' + p) else ''
     return p + ('?v=' + _ASSET_VER[p] if _ASSET_VER[p] else '')
 def version_assets(s):
     # every quoted /assets/... URL gets ?v=<content hash>, so a replaced file is never served from a stale 1-year cache
