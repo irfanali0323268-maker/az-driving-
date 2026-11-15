@@ -419,7 +419,7 @@ def post_card(p):
 
 def body_blog():
     return (head('Blog', 'Driving Lesson <span class="gr">Tips &amp; Guides</span>', 'Friendly, practical advice from AZ Driving School for learners in Gloucester, Stroud, Tewkesbury and Cheltenham.', 'blog')
-      + f'<section class="w"><div class="grid blog">{"".join(post_card(p) for p in POSTS)}</div></section>' + CTA())
+      + f'<section class="w"><div class="grid blog">{"".join(post_card(p) for p in POSTS)}</div></section>' + '<section class="w"><div id="soro-blog"></div><script src="https://app.trysoro.com/api/embed/78b2f95c-2568-4097-a261-055306c9f531" defer></script></section>' + CTA())
 
 def latest_posts():
     return (f'<section class="w">{sec_head("From the blog", "Tips and <span class=gr>guides</span> for learners", "Straight answers on lessons, tests and costs.")}'
