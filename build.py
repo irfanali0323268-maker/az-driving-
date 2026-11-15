@@ -590,7 +590,7 @@ def sm_vid(k):
     if k != 'videos': return ''
     return (f'<video:video><video:thumbnail_loc>{BASE}{PROMO_POSTER}</video:thumbnail_loc><video:title>AZ Driving School: Learn to Drive. Drive with Confidence.</video:title>'
             f'<video:description>A 30-second video about AZ Driving School: manual and automatic driving lessons, instructor training and test preparation in Gloucester, Stroud, Tewkesbury and Cheltenham.</video:description>'
-            f'<video:content_loc>{BASE}{PROMO}</video:content_loc><video:player_loc>{U(k)}</video:player_loc><video:duration>30</video:duration><video:publication_date>{TODAY}</video:publication_date><video:family_friendly>yes</video:family_friendly></video:video>')
+            f'<video:content_loc>{BASE}{PROMO}</video:content_loc><video:duration>30</video:duration><video:publication_date>{TODAY}</video:publication_date><video:family_friendly>yes</video:family_friendly></video:video>')
 def sm_alt(k): return f'<xhtml:link rel="alternate" hreflang="en-GB" href="{U(k)}"/><xhtml:link rel="alternate" hreflang="x-default" href="{U(k)}"/>'
 def pri(k): return "1.0" if k == "index" else ("0.8" if k in ("blog", "videos", "best-driving-school-gloucester") or k.startswith("blog/") else "0.9" if k in ("driving-courses", "pricing", "contact") else ("0.2" if k in ("sitemap", "privacy-policy") else "0.7"))
 write('sitemap.xml', '<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">'
