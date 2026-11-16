@@ -583,8 +583,8 @@ form .btn[disabled]{opacity:.7;cursor:progress;transform:none}
 @keyframes okin{from{opacity:0;transform:translateY(14px) scale(.98)}to{opacity:1;transform:none}}
 
 /* Safari / iOS: blend modes on <video> can freeze or render blank, so use a plain white card there (same as phones) */
-html.nb .vd{background:#fff;border:0;border-radius:26px;overflow:hidden;box-shadow:0 20px 40px -22px rgba(11,31,77,.35)}
-html.nb .vd video,html.nb #intro video{mix-blend-mode:normal}
+html.nomix .vd{background:#fff;border:0;border-radius:26px;overflow:hidden;box-shadow:0 20px 40px -22px rgba(11,31,77,.35)}
+html.nomix .vd video,html.nomix #intro video{mix-blend-mode:normal}
 
 /* ===== Blog ===== */
 .blog{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
