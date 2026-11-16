@@ -313,7 +313,7 @@ box-shadow:var(--rim),inset 14px 14px 30px -22px rgba(120,160,255,.35),inset -14
 .gl:hover{box-shadow:var(--rim),0 0 0 1px rgba(200,150,12,.5),0 0 44px rgba(233,185,58,.3),0 36px 64px -22px rgba(11,31,77,.34)}
 /* small glass surfaces get a real liquid lens (Chromium); others keep the blur above */
 nav#nav,.dock,.seg,.wp,.pw,.fc .ci,footer .fb2{-webkit-backdrop-filter:blur(14px) saturate(2) brightness(1.06);backdrop-filter:blur(14px) saturate(2) brightness(1.06)}
-@supports (backdrop-filter:url(#lg)){
+@media (hover:hover) and (pointer:fine){
   nav#nav,.dock,.seg{-webkit-backdrop-filter:blur(10px) saturate(2.1) brightness(1.06);backdrop-filter:url(#lg) blur(10px) saturate(2.1) brightness(1.06)}
 }
 nav#nav,.dock,.seg,.wp{box-shadow:var(--rim),0 0 0 1px rgba(11,31,77,.06),0 18px 44px -12px rgba(11,31,77,.28)}
